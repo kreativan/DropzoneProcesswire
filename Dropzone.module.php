@@ -24,12 +24,19 @@ class Dropzone extends WireData implements Module {
     /**
      *  Load Dropzone
      *  @param params array
-     *  @param data   array, data you wish to POST along with files
+     *  @param data   array // data you wish to POST along with files
      * 
      */
     public function loadDropzone($params = [], $data = []) {
 
+        // Load Scripts
+        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/sweetalert.min.js");
+        $this->config->styles->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.css");
+        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.js");
+        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/dropzone.js");
+
         $submitForm = !empty($params["submitForm"]) && $params["submitForm"] == "true" ? true : false;
+        $redirect   = !empty($params["redirect"]) && $params["redirect"] == "false" ? false : true;
 
         $url        = !empty($params["url"]) ? $params["url"] : "";
         $id         = !empty($params["id"]) ? $params["id"] : "dropzone";
@@ -54,15 +61,13 @@ class Dropzone extends WireData implements Module {
         $textFileType   = !empty($params["textFileType"]) ? $params["textFileType"] : __("Invalid File Type");
         $textCancel     = !empty($params["textCancel"]) ? $params["textCancel"] : __("Cancel");
         $textRemove     = !empty($params["textRemove"]) ? $params["textRemove"] : __("Remove");
+        $textAreYouSure = !empty($params["textAreYouSure"]) ? $params["textAreYouSure"] : __("Are you Sure?");
         
-        
-        // Load Scripts
-        $this->config->styles->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.css");
-        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.js");
-        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/dropzone.js");
 
         // variables
         $dropzoneVars = array(
+            "current_url" => $this->page->url,
+            "redirect" => $redirect,
             'debug' => $this->config->debug,
             'submitForm' => $submitForm,
             'formID' => $formID,
@@ -84,13 +89,14 @@ class Dropzone extends WireData implements Module {
             "textFileType" => $textFileType,
             "textCancel" => $textCancel,
             "textRemove" => $textRemove,
+            "textAreYouSure" => $textAreYouSure,
         );
 
 
         // custom data user can define
-        // will be sent as POST by dropzone upload and remove along site the file
+        // will be sent as POST by dropzone along with the files
         $dropzoneData = [];
-        // add data
+        // add custom data
         foreach($data as $key => $value) $dropzoneData[$key] = $value;
 
         // pass variables to the js
