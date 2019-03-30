@@ -25,6 +25,25 @@ class Dropzone extends WireData implements Module {
      *  Load Dropzone
      *  @param params array
      *  @param data   array // data you wish to POST along with files
+     *  
+     *  @var submitForm                 bool/string // submit form after dropzone Ajax request, default = false (optional)
+     *  @var redirect                   bool/string // redirect to the same page after modal confim, only works if submitForm = false
+     *  @var url                        string // url where u want to post data (required)
+     *  @var id                         string // dropzone field css id, default = dropzone (optional)
+     *  @var formID                     string // form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
+     *  @var buttonID                   string // submit button css ID, default = submit-dropzone (required)
+     * 
+     *  @var acceptedFiles              string // allowed files (.jpg,.png,.pdf), default = image/*
+     *  @var maxFiles                   integer // max number of files allowed, default = 5 (optional)
+     *  @var maxFilesize                float // max file size allowed in MB, default = 0.3 (optional)
+     *  @var uploadMultiple             bool // no used currently
+     *  @var addRemoveLinks             bool // not used, using custom remove button so we can use custom modal confirm
+     *  @var confirmRemove              bool // not used, using custom remove button
+     *  @var createImageThumbnails      bool // create thumbnails on image add, default = "true" (optional)
+     *  @var thumbnailWidth             integer // thumbnail width, default = 120 (optional)
+     *  @var thumbnailHeight            integer // thumbnail height, default = 120 (optional)
+     * 
+     *  @var images                     array // Array of existing images. ["url" => "", "name" => "", "size" => ""]
      * 
      */
     public function loadDropzone($params = [], $data = []) {
@@ -62,7 +81,9 @@ class Dropzone extends WireData implements Module {
         $textCancel     = !empty($params["textCancel"]) ? $params["textCancel"] : __("Cancel");
         $textRemove     = !empty($params["textRemove"]) ? $params["textRemove"] : __("Remove");
         $textAreYouSure = !empty($params["textAreYouSure"]) ? $params["textAreYouSure"] : __("Are you Sure?");
-        
+
+        // images
+        $images = !empty($params["images"]) ? $params["images"] : "";
 
         // variables
         $dropzoneVars = array(
@@ -90,6 +111,7 @@ class Dropzone extends WireData implements Module {
             "textCancel" => $textCancel,
             "textRemove" => $textRemove,
             "textAreYouSure" => $textAreYouSure,
+            "images" => $images,
         );
 
 
@@ -100,13 +122,19 @@ class Dropzone extends WireData implements Module {
         foreach($data as $key => $value) $dropzoneData[$key] = $value;
 
         // pass variables to the js
-        echo "<script>const dropzoneVars = " . json_encode($dropzoneVars) . ";</script>";
-        echo "<script>const dropzoneData = " . json_encode($dropzoneData) . ";</script>";
+        $vars =  "<script>const dropzoneVars = " . json_encode($dropzoneVars) . ";</script>";
+        $data = "<script>const dropzoneData = " . json_encode($dropzoneData) . ";</script>";
 
         // render the field
-        return "<div id='$id' class='dropzone'></div>";
+        return "<div id='$id' class='dropzone'>$vars $data</div>";
 
     }
 
+
+    public function uploadPHP() {
+
+        
+
+    }
 
 }

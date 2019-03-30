@@ -43,7 +43,7 @@ var myDropzone = new Dropzone("#"+dropzoneVars.id, {
 
 myDropzone.on("addedfile", function(file) {
     // console.log(file);
-    addCustomRemoveButton(file, this);
+    dropzoneRemoveButton(file, this);
 });
 
 
@@ -53,7 +53,7 @@ myDropzone.on("sending", function(file, xhr, formData) {
     formData.append('dropzoneAjax', '1');
 
     // append form fields
-    appendFormFields(formData);
+    dropzoneAppendFormFelds(formData);
 
     // append custom data
     for (let fieldName in dropzoneData) {
@@ -77,28 +77,63 @@ myDropzone.on("successmultiple", function(file, response) {
     // get response from successful ajax request
     if (dropzoneVars.debug === true) console.log(response);
 
-    if (dropzoneVars.submitForm === true || !file) {
+    if (dropzoneVars.submitForm === true) {
 
+        // submit the form as normal
         dropzoneFormSubmit();
 
     } else if (response.status && response.message) {
+        
+
         swal(
             title = response.status, 
             text = response.message, 
             icon = response.status,
         )
         .then((value) => { 
+
             if (dropzoneVars.redirect === true && response.status != "error") {
                 window.location.href = dropzoneVars.current_url;
             } else if (response.status != "error") {
-                resetFormFields();
-                this.removeAllFiles();
+                dropzoneResetFields();
+                //this.removeAllFiles();
             }
+
+            this.removeAllFiles();
+
         });
             
     }
 
 });
+
+
+/**
+ *  Add existing images to the dropzone
+ *  We got imaegs from dz variable we passed from php
+ *  @var dropzoneVars.images
+ *
+ */
+for(let i = 0; i < dropzoneVars.images.length; i++) {
+
+    let img = dropzoneVars.images[i];
+    //console.log(img);
+
+    // Create the mock file:
+    var mockFile = {name: img.name, size: img.size, url: img.url};
+    // Call the default addedfile event handler
+    myDropzone.emit("addedfile", mockFile);
+    // And optionally show the thumbnail of the file:
+    myDropzone.emit("thumbnail", mockFile, img.url);
+    // Make sure that there is no progress bar, etc...
+    myDropzone.emit("complete", mockFile);
+    // If you use the maxFiles option, make sure you adjust it to the
+    // correct amount:
+    var existingFileCount = 1; // The number of files already uploaded
+    myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+
+
+}
 
 
 /**
@@ -117,11 +152,24 @@ function submitDropzone() {
             e.preventDefault();
             e.stopPropagation();
 
-            if (myDropzone.files != "") {
-                // console.log(myDropzone.files);
-                myDropzone.processQueue();
+            validateForm = dropzoneFormValidate();
+
+            if(validateForm.status === true) {
+
+                if (myDropzone.files != "") {
+                    //console.log(myDropzone.files);
+                    myDropzone.processQueue();
+                } else {
+                    dropzoneFormSubmit();
+                }
+
             } else {
-                dropzoneFormSubmit();
+                console.log(validateForm);
+                swal(
+                    title = "Form invalid", 
+                    text = "Please check following fields: " + validateForm.errors, 
+                    icon = "warning",
+                )
             }
 
         });
@@ -133,6 +181,11 @@ function submitDropzone() {
 submitDropzone();
 
 
+/* ======================================================================
+    Functions
+====================================================================== */
+
+
 /**
  *  Submit form 
  *  based on the form css ID
@@ -142,7 +195,7 @@ submitDropzone();
 function dropzoneFormSubmit() {
 
     let form = (dropzoneVars.formID != "") ? document.getElementById(dropzoneVars.formID) : "";
-
+    
     if(form) {
         var input = document.createElement("input");
         input.setAttribute("type", "text");
@@ -163,7 +216,7 @@ function dropzoneFormSubmit() {
  *  @var dropzoneVars.formID
  *  
  */
-function resetFormFields() {
+function dropzoneResetFields() {
 
     let id = "#" + dropzoneVars.formID;
     let selector = `${id} input:not(.uk-hidden), ${id} textarea`;
@@ -187,7 +240,7 @@ function resetFormFields() {
  *  @param formData = new FormData();
  * 
  */
-function appendFormFields(formData) {
+function dropzoneAppendFormFelds(formData) {
 
     formData = (formData) ? formData : new FormData();
 
@@ -224,6 +277,7 @@ function dropzoneRemoveReq(file, _this) {
     // create form data to send
     var formData = new FormData();
     formData.append('dropzoneRemove', '1');
+    formData.append('file_url', file.url);
     formData.append('file_name', file.name);
     formData.append('accepted', file.accepted);
     formData.append('type', file.type);
@@ -262,7 +316,7 @@ function dropzoneRemoveReq(file, _this) {
  *  @param _this  this // this dropzone instance
  * 
  */
-function addCustomRemoveButton(file, _this) {
+function dropzoneRemoveButton(file, _this) {
 
     var removeButton = Dropzone.createElement("<button class='dropzone-remove'>Remove</button>");
     //var _this = this;
@@ -295,3 +349,44 @@ function addCustomRemoveButton(file, _this) {
     file.previewElement.appendChild(removeButton);
 
 }
+
+
+/**
+ *  Validate Form
+ *  @var  dropzoneVars.formID 
+ *  @return response object
+ *  @example dropzoneFormValidate().status;
+ */
+function dropzoneFormValidate() {
+
+    let errors = "";
+
+    let formID = "#"+dropzoneVars.formID;
+    let selector = `${formID} input:not(.uk-hidden), ${formID} textarea, ${formID} select, ${formID} radio, ${formID} checkbox`;
+    let fields = document.querySelectorAll(selector);
+    //console.log(fields);
+
+    fields.forEach(e => {
+
+        if(e.checkValidity() === false) {
+            //console.log(e);
+            let name = e.getAttribute("name");
+            errors += (errors == "") ? name  : "," + name;
+        }
+
+    });
+
+    var validate = (errors != "") ? false : true;
+    var response = {
+        "status": validate,
+        "errors": errors
+    }
+
+    // console.log(fields)
+    // console.log(response)    
+
+    return response;
+
+}
+
+dropzoneFormValidate();
