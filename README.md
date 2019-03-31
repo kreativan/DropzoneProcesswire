@@ -299,7 +299,7 @@ Form
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <input id="submit-dropzone"type="submit" name="dropzoneSubmit" value="Submit" />
+    <input id="submit-dropzone" type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 ```
@@ -372,7 +372,7 @@ Add / remove images and edit other fields on a page.
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <input id="submit-dropzone"type="submit" name="dropzoneSubmit" value="Submit" />
+    <input id="submit-dropzone" type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 
