@@ -158,7 +158,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <input id="submit-dropzone"type="submit" name="dropzoneSubmit" value="Submit" />
+    <input id="submit-dropzone" type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 ```
@@ -215,9 +215,7 @@ Build a form and load dropzone inside
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <div class="uk-margin">
-        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
-    </div>
+    <input id="submit-dropzone" type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 ```
@@ -301,9 +299,7 @@ Form
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <div class="uk-margin">
-        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
-    </div>
+    <input id="submit-dropzone"type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 ```
@@ -343,11 +339,11 @@ Add / remove images and edit other fields on a page.
 ```php
 <form id="dropzone-form" action="./" method="POST">
 
-    <input class="uk-input" type="text" name="title" value="<?= $page->title ?>">
+    <input type="text" name="title" value="<?= $page->title ?>">
 
-    <input class="uk-input uk-margin" type="text" name="headline" value="<?= $pages->headline ?>" >
+    <input type="text" name="headline" value="<?= $pages->headline ?>" >
 
-    <input class="uk-input uk-margin" type="text" name="text" value="<?= $pages->text ?>" >
+    <input type="text" name="text" value="<?= $pages->text ?>" >
 
     <?php
         // set params
@@ -376,9 +372,7 @@ Add / remove images and edit other fields on a page.
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <div class="uk-margin">
-        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
-    </div>
+    <input id="submit-dropzone"type="submit" name="dropzoneSubmit" value="Submit" />
 
 </form>
 
