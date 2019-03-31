@@ -52,13 +52,19 @@ What Dropzone module can do:
 
         echo $dropzone->loadDropzone($params, $data);
 
-       // Optional Captcha 
-       echo $dropzone->renderCaptcha();
-
     ?>
 
-    <!-- NOTE: button name needs to be != submit -->
-    <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    <div>
+        <?php
+            // Optional Captcha 
+            echo $dropzone->renderCaptcha();
+        ?>
+    </div>
+
+    <div>
+        <!-- NOTE: button name needs to be != submit -->
+        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    </div>
 
 </form>
 ```
