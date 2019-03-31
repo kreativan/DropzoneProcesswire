@@ -177,6 +177,8 @@ Form
             "url" => $page->url,
             "formID" => "dropzone-form",
             "buttonID" => "submit-dropzone",
+            // load existing images to dropzone field
+            "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
         ];
         
         // init dropzone
