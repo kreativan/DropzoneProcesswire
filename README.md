@@ -38,3 +38,14 @@ $params = [
     "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
 ];
 ```
+### Data
+Send aditional data along with files
+```
+$data = [
+    "name" => "Kreativan",
+    "page_id" => $page->id,
+    "page_name" => $page->name,
+];
+
+echo $modules->get("Dropzone)->loadDropzone($params, $data);
+```
