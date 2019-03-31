@@ -1,11 +1,32 @@
 <?php namespace ProcessWire;
 /**
  *  Dropzone module
+ * 
+ *  This module is built with page edits in mind, for editing pages with files and images, on the front-end.
+ *  It can remove and add files and images on a page with ajax requests. 
+ *  Dropzone module can submit other form data along with files, therefore it can be used to edit all page fields.
+ *  It can also be used just to upload files to a specific destination, @see uploadPHP() and wireUpload() methods.
+ *  Oh, yes, u can use dropzone for all kind of forms (that need files handling), to send emails with attachemnts etc..
+ *  Also handles basic form validation and custom captcha.
  *
  *  @author Ivan Milincic <kreativan@outlook.com>
  *  @copyright 2019 Kreativan
  *
- *
+ *  @method loadDropzone()      // init dropzone inside the form
+ *  @method uploadPHP()         // uplaod files using vanila php
+ *  @method wireUpload()        // upload files using WireUpload class
+ * 
+ *  @method getPageFiles()      // get page images, returns dropzone image array
+ *  @method fileToPage()        // add image to page,
+ *  @method deletePageFile()    // delete image from a page
+ *  @method fileExists()        // check if image exists on a page
+ * 
+ *  @method addFile             // fileToPage() + json response 
+ *  @method removeFile          // deletePageFile() + json response
+ *  
+ *  @method swal()              // Sweet Alert init
+ *  @method renderCaptcha()     // render numb captcha
+ * 
 */
 
 class Dropzone extends WireData implements Module {
@@ -43,7 +64,7 @@ class Dropzone extends WireData implements Module {
      *  @var thumbnailWidth             integer // thumbnail width, default = 120 (optional)
      *  @var thumbnailHeight            integer // thumbnail height, default = 120 (optional)
      * 
-     *  @var images                     array // Array of existing images. ["url" => "", "name" => "", "size" => ""]
+     *  @var my_files                   array // Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
      * 
      */
     public function loadDropzone($params = [], $data = []) {
@@ -55,7 +76,7 @@ class Dropzone extends WireData implements Module {
         $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/dropzone.js");
 
         $submitForm = !empty($params["submitForm"]) && $params["submitForm"] == "true" ? true : false;
-        $redirect   = !empty($params["redirect"]) && $params["redirect"] == "false" ? false : true;
+        $redirect   = !empty($params["redirect"]) && $params["redirect"] == "false" ? false : true; 
 
         $url        = !empty($params["url"]) ? $params["url"] : "";
         $id         = !empty($params["id"]) ? $params["id"] : "dropzone";
@@ -74,16 +95,18 @@ class Dropzone extends WireData implements Module {
         $thumbnailWidth         = !empty($params["thumbnailWidth"]) ? $params["thumbnailWidth"] : 120;
         $thumbnailHeight        = !empty($params["thumbnailHeight"]) ? $params["thumbnailHeight"] : 120;
 
-        $textMessage    = !empty($params["textMessage"]) ? $params["textMessage"] : __("Drop files here to upload");
-        $textMaxSize    = !empty($params["textMaxSize"]) ? $params["textMaxSize"] : __("Max allowed file size is");
-        $textMaxFiles   = !empty($params["textMaxFiles"]) ? $params["textMaxFiles"] : __("files are allowed");
-        $textFileType   = !empty($params["textFileType"]) ? $params["textFileType"] : __("Invalid File Type");
-        $textCancel     = !empty($params["textCancel"]) ? $params["textCancel"] : __("Cancel");
-        $textRemove     = !empty($params["textRemove"]) ? $params["textRemove"] : __("Remove");
-        $textAreYouSure = !empty($params["textAreYouSure"]) ? $params["textAreYouSure"] : __("Are you Sure?");
+        $textMessage        = !empty($params["textMessage"]) ? $params["textMessage"] : __("Drop files here to upload");
+        $textMaxSize        = !empty($params["textMaxSize"]) ? $params["textMaxSize"] : __("Max allowed file size is");
+        $textMaxFiles       = !empty($params["textMaxFiles"]) ? $params["textMaxFiles"] : __("files are allowed");
+        $textFileType       = !empty($params["textFileType"]) ? $params["textFileType"] : __("Invalid File Type");
+        $textCancel         = !empty($params["textCancel"]) ? $params["textCancel"] : __("Cancel");
+        $textRemove         = !empty($params["textRemove"]) ? $params["textRemove"] : __("Remove");
+        $textAreYouSure     = !empty($params["textAreYouSure"]) ? $params["textAreYouSure"] : __("Are you Sure?");
+        $textFormInvalid    = !empty($params["textFormInvalid"]) ? $params["textFormInvalid"] : __("Form invalid");
+        $textCheckFields    = !empty($params["textCheckFields"]) ? $params["textCheckFields"] : __("Please fill in all required fields");
 
         // images
-        $images = !empty($params["images"]) ? $params["images"] : "";
+        $my_files = !empty($params["my_files"]) ? $params["my_files"] : "";
 
         // variables
         $dropzoneVars = array(
@@ -104,15 +127,21 @@ class Dropzone extends WireData implements Module {
             'createImageThumbnails' => $createImageThumbnails,
             'thumbnailWidth' => $thumbnailWidth,
             'thumbnailHeight' => $thumbnailHeight,
-            "textMessage" => $textMessage,
-            "textMaxSize" => $textMaxSize, 
-            "textMaxFiles" => $textMaxFiles,
-            "textFileType" => $textFileType,
-            "textCancel" => $textCancel,
-            "textRemove" => $textRemove,
-            "textAreYouSure" => $textAreYouSure,
-            "images" => $images,
+            "my_files" => $my_files,
         );
+
+        // text strings
+        $dropzoneText = [
+            "message" => $textMessage,
+            "max_size" => $textMaxSize, 
+            "max_files" => $textMaxFiles,
+            "file_type" => $textFileType,
+            "cancel" => $textCancel,
+            "remove" => $textRemove,
+            "are_you_sure" => $textAreYouSure,
+            "form_invalid" => $textFormInvalid,
+            "check_fields" => $textCheckFields,
+        ];
 
 
         // custom data user can define
@@ -124,17 +153,315 @@ class Dropzone extends WireData implements Module {
         // pass variables to the js
         $vars =  "<script>const dropzoneVars = " . json_encode($dropzoneVars) . ";</script>";
         $data = "<script>const dropzoneData = " . json_encode($dropzoneData) . ";</script>";
+        $text = "<script>const dropzoneText = " . json_encode($dropzoneText) . ";</script>";
 
         // render the field
-        return "<div id='$id' class='dropzone'>$vars $data</div>";
+        $dropzone = "
+            <input type='text' name='dropzoneHoneypot' style='display:none;' />
+            <div id='$id' class='dropzone'>$vars $data $text</div>
+        ";
+        return $dropzone;
+
+    }
+
+    /**
+     *  Upload files using vanilla php
+     *  @var dest   string, destination folder
+     * 
+     */
+    public function uploadPHP($dest = "") {
+
+        if (!empty($_FILES)) {
+            // if dest folder doesen't exists, create it
+            if(!file_exists($dest) && !is_dir($dest)) throw new WireException("Destination path doesn't exists");
+
+            foreach($_FILES['dropzoneFiles']['tmp_name'] as $key => $value) {
+                $tempFile = $_FILES['dropzoneFiles']['tmp_name'][$key];
+                $targetFile =  $dest. $_FILES['dropzoneFiles']['name'][$key];
+                move_uploaded_file($tempFile,$targetFile);
+            }
+
+        }
 
     }
 
 
-    public function uploadPHP() {
+    /**
+     *  Uplaod files using WireUpload class
+     *  @param dest             string, destination folder
+     *  @param allowed_files    array, this is required for WireUpload
+     * 
+     */
+    public function wireUpload($dest = "", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
 
+        // if dest folder doesen't exists, create it
+        if(!file_exists($dest) && !is_dir($dest)) mkdir($dest);
+
+        // WireUpload
+        $upload = new WireUpload("dropzoneFiles");
+        // $upload->setMaxFiles(1);
+        $upload->setOverwrite(true);
+        $upload->setDestinationPath($dest);
+        $upload->setValidExtensions($allowed_files); 
+        $upload->execute();
+
+    }
+
+
+    /**
+     *  Create images/files array to send to dropzone as existing images.
+     *  @var page_field    object, page images/files field
+     *  @example $this->getPageFiles($page->images); 
+     *  @return array ["url" => "", "name" => "", "size" => ""]
+     * 
+     */
+    public function getPageFiles($page_field) {
+
+        $arr = [];
+
+        if(!empty($page_field) && $page_field->count) {
+            foreach($page_field as $f) {
+                $arr[] = [
+                    "url" => $f->url, 
+                    "name" => $f->basename, 
+                    "size" => $f->filesize
+                ];
+            }
+        }
+
+        return $arr;
+
+    }
+    
+
+    /**
+     *  Add images/files to the page
+     *  @param p                page object
+     *  @param page_field        str, page images/files field name
+     *  @param allowed_files    array, this is required for WireUpload
+     * 
+     */
+    public function fileToPage($p, $page_field, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
+
+        $dest = $this->config->paths->files . $p->id . "/";
         
+        if($p->{$page_field}) {
+            // upload image
+            $upload = new WireUpload("dropzoneFiles");
+            $upload->setOverwrite(false);
+            $upload->setDestinationPath($dest);
+            $upload->setValidExtensions($allowed_files);
+            $upload->execute();
+            $p->of(false);
+            foreach($upload->execute() as $filename) $p->{$page_field}->add($dest . $filename);
+            $p->save();
+        } else {
+            
+            throw new WireException("File/image field name doesn't exists");
+
+        }
 
     }
+
+    /**
+     *  Delete image/file from a page 
+     *  @param p                page object
+     *  @param page_field        str, page images/files field name
+     *  @param file_name         str, image/file basename, optional, if not spefified $input->post->file_name will be used
+     * 
+     *  POST: $input->post(@var)
+     *  @var dropzoneRemove     str, 1, to check for request @example if ($input->post->dropzoneRemove) {...}
+     *  @var file_url           url, image/file url
+     *  @var file_name          str, image/file basename,
+     *  @var accepted           bool, true / false
+     *  @var type               str, eg: "image/jpeg"
+     * 
+     */
+    public function deletePageFile($p, $page_field, $file_name) {
+        
+        $file_name_post = $this->sanitizer->text($this->input->post->file_name);
+        $file_name = !empty($file_name) ? $file_name : $file_name_post;
+
+        $fileExists  = $this->fileExists($p, $page_field, $file_name);
+
+        if($fileExists == true) {
+
+            if(!empty($p->{$page_field})) $this_file = $p->{$page_field}->get("name=$file_name");
+
+            if($this_file && $this_file != "") {
+                $p->of(false);
+                if($p->{$page_field}->count == 1) $p->{$page_field}->removeAll();
+                if(!empty($this_file && $this_file != "")) $p->{$page_field}->delete($this_file);
+                $p->save();
+            }
+
+        } 
+
+    }
+    
+    /**
+     *  Check if image/file exists on a page
+     *  @param p                page object 
+     *  @param page_field        str, page images/files field name
+     *  @param file_name         str, image/file basename, @example example.jpg
+     *  @return bool
+     * 
+     */
+    public function fileExists($p, $page_field, $file_name) {
+        if(!empty($p) && !empty($p->{$page_field}) && !empty($file_name)) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+        return $status;
+    }
+
+    /**
+     *  Sweet Alert
+     *  @param title    str
+     *  @param text     str
+     *  @param icon     str, success/error/warning/info
+     * 
+     */
+    public function swal($title, $text, $icon) {
+
+        $swal = "
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    swal('$title', '$text', '$icon');
+                }, false);
+            </script>
+        ";
+
+        return $swal;
+
+    }
+
+
+    /**
+     *  Number Catpcha
+     *  Use it inside a form
+     *  @return html
+     */
+    public function renderCaptcha() {
+
+        $numb_1 = rand(1, 5);
+        $numb_2 = rand(1, 5);
+        $answer = $numb_1 + $numb_2;
+
+        $inputs = "
+            <input id='numb-captcha-answer' type='text' name='answer' value='{$answer}' required style='display:none;' />
+            <input id='numb-captcha-q' class='uk-input' type='text' name='numb_captcha' 
+            placeholder='$numb_1 + $numb_2 = ?' required />
+        ";
+
+        return $inputs;
+
+    }
+
+    /* =========================================================== 
+        AIO methods
+    =========================================================== */
+
+    /**
+     *  Add images/files to the page and return json response
+     *  @param p                page object
+     *  @param page_field       str, page images/files field name
+     *  @param allowed_files    array, this is required for WireUpload
+     *  
+     *  @see @method fileToPage()
+     *  
+     */
+    public function addFile($p, $page_field, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
+
+        try {
+
+            echo $this->fileToPage($p, $page_field, $allowed_files);
+
+            $status = "success";
+            $message = __("Upload Complete!");
+            $error = "";
+
+        } catch (Exception $e) {
+
+            $status = "error";
+            $message = __("Upload Failed!");
+            $error = $e->getMessage();
+
+        }
+
+        /**
+         *	Response 
+         *	return json response to the dropzone
+         *	@var data array
+         */
+        $data = [
+            "status" => "$status",
+            "message" => "$message",
+            "error" => $error,
+            "post" => $_POST,
+        ];
+
+        header("Content-type: application/json");
+        echo json_encode($data);
+        exit();
+
+    }
+
+
+
+    /**
+     *  Send Dropzone Image remove request and return json response
+     * 
+     *  @param p                page object
+     *  @param page_field        str, page images/files field name
+     *  @param file_name         str, image/file basename, optional, if not spefified $input->post->file_name will be used
+     * 
+     *  @see @method deletePageFile()
+     *  @see @method fileExists()
+     * 
+     */
+    public function removeFile($p, $page_field, $file_name) {
+
+        $file_name_post = $this->sanitizer->text($this->input->post->file_name);
+        $file_name = !empty($file_name) ? $file_name : $file_name_post;
+
+        $fileExists =  $this->fileExists($p, $page_field, $file_name);
+        if($fileExists == true) {
+
+            // delete image
+            echo $this->deletePageFile($p, $page_field, $file_name);
+
+            $status = "success";
+            $message = __("Image has been removed");
+            $error = "";
+
+        } else {
+
+            $status = "error";
+            $message = __("Remove image faild!");
+            $error = __("Image, field or page dosen't exists");
+
+        }
+
+        /**
+         *	Response 
+         *	return json response to the dropzone
+         *	@var data array
+         */
+        $data = [
+            "status" => "$status",
+            "message" => "$message",
+            "error" => $error,
+            "files" => $_FILES,
+            "post" => $_POST,
+        ];
+
+        header("Content-type: application/json");
+        echo json_encode($data);
+        exit();
+
+    }
+
 
 }

@@ -6,6 +6,7 @@
  *  
  *  @var dropzoneVars object // dropzone variables
  *  @var dropzoneData object // data we want to POST along with files
+ *  @var dropzoneText object // text strings
  * 
  *
 */
@@ -32,12 +33,12 @@ var myDropzone = new Dropzone("#"+dropzoneVars.id, {
     timeout: 180000,
     // dictRemoveFileConfirmation: dropzoneVars.dictRemoveFileConfirmation, // ask before removing file
     // Language Strings
-    dictFileTooBig: dropzoneVars.textMaxSize + " {{maxFilesize}}mb",
-    dictInvalidFileType: dropzoneVars.textFileType,
-    dictCancelUpload: dropzoneVars.textCancel,
-    dictRemoveFile: dropzoneVars.textRemove,
-    dictMaxFilesExceeded: "{{maxFiles}}" + dropzoneVars.textMaxFiles,
-    dictDefaultMessage: dropzoneVars.textMessage,
+    dictFileTooBig: dropzoneText.max_size + " {{maxFilesize}}mb",
+    dictInvalidFileType: dropzoneText.file_type,
+    dictCancelUpload: dropzoneText.cancel,
+    dictRemoveFile: dropzoneText.remove,
+    dictMaxFilesExceeded: "{{maxFiles}}" + dropzoneText.max_files,
+    dictDefaultMessage: dropzoneText.message,
 });
 
 
@@ -111,12 +112,12 @@ myDropzone.on("successmultiple", function(file, response) {
 /**
  *  Add existing images to the dropzone
  *  We got imaegs from dz variable we passed from php
- *  @var dropzoneVars.images
+ *  @var dropzoneVars.my_files
  *
  */
-for(let i = 0; i < dropzoneVars.images.length; i++) {
+for(let i = 0; i < dropzoneVars.my_files.length; i++) {
 
-    let img = dropzoneVars.images[i];
+    let img = dropzoneVars.my_files[i];
     //console.log(img);
 
     // Create the mock file:
@@ -140,6 +141,9 @@ for(let i = 0; i < dropzoneVars.images.length; i++) {
  *  Trigger on button click
  *  processingQueue and (optionaly) submit the form after sending files
  *  @var dropzoneVars.buttonID
+ *  @function dropzoneFormSubmit()    // submits the form
+ *  @function dropzoneFormValidate()  // validates the form
+ *  @function dropzoneCaptcha()       // validate captcha
  * 
  */
 function submitDropzone() {
@@ -153,8 +157,10 @@ function submitDropzone() {
             e.stopPropagation();
 
             validateForm = dropzoneFormValidate();
+            captcha = dropzoneCaptcha();
+            honeypot = document.querySelector("input[name=dropzoneHoneypot]").value;
 
-            if(validateForm.status === true) {
+            if(validateForm.status === true && !honeypot && captcha === true) {
 
                 if (myDropzone.files != "") {
                     //console.log(myDropzone.files);
@@ -164,10 +170,11 @@ function submitDropzone() {
                 }
 
             } else {
-                console.log(validateForm);
+                if (dropzoneVars.debug === true) console.log(validateForm);
                 swal(
-                    title = "Form invalid", 
-                    text = "Please check following fields: " + validateForm.errors, 
+                    title = dropzoneText.form_invalid, 
+                    //text = dropzoneText.check_fields + " " + validateForm.errors, 
+                    text = dropzoneText.check_fields, 
                     icon = "warning",
                 )
             }
@@ -314,6 +321,7 @@ function dropzoneRemoveReq(file, _this) {
  *  so we can use confirm modal
  *  @param file   dropzone file // requierd
  *  @param _this  this // this dropzone instance
+ *  @function dropzoneRemoveReq() // send the file remove request   
  * 
  */
 function dropzoneRemoveButton(file, _this) {
@@ -332,7 +340,7 @@ function dropzoneRemoveButton(file, _this) {
         //console.log(file.name);
 
         swal({
-            title: dropzoneVars.textAreYouSure,
+            title: dropzoneText.are_you_sure,
             buttons: true,
         })
         .then((ok) => {
@@ -364,12 +372,10 @@ function dropzoneFormValidate() {
     let formID = "#"+dropzoneVars.formID;
     let selector = `${formID} input:not(.uk-hidden), ${formID} textarea, ${formID} select, ${formID} radio, ${formID} checkbox`;
     let fields = document.querySelectorAll(selector);
-    //console.log(fields);
 
     fields.forEach(e => {
 
         if(e.checkValidity() === false) {
-            //console.log(e);
             let name = e.getAttribute("name");
             errors += (errors == "") ? name  : "," + name;
         }
@@ -389,4 +395,31 @@ function dropzoneFormValidate() {
 
 }
 
-dropzoneFormValidate();
+
+/**
+ *  Validate numb Captcha
+ *  @return bool
+ * 
+ */
+function dropzoneCaptcha() {
+
+    let isCaptchaOn =  document.getElementById("numb-captcha-answer");
+    
+    if(isCaptchaOn) {
+
+        let answer = document.getElementById("numb-captcha-answer").value;
+        let question = document.getElementById("numb-captcha-q").value;
+        
+        if(answer === question) {
+            return true;
+        } else {
+            return false;
+        }
+
+    } else {
+
+        return true;
+        
+    }
+
+}
