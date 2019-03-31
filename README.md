@@ -90,7 +90,7 @@ $data = [
 echo $modules->get("Dropzone)->loadDropzone($params, $data);
 ```
 
-### Basic Usage
+## Basic Usage - File Uplaod
 Build a form and load dropzone inside
 ```
 <form id="dropzone-form" action="./" method="POST">
@@ -126,6 +126,7 @@ if($input->post->dropzoneAjax) {
     $error = "";
 
     try {
+
         // upload file to /site/templates/temp/ folder
         echo $dropzone->wireUpload($config->paths->templates . "temp/");
 
@@ -148,11 +149,11 @@ if($input->post->dropzoneAjax) {
      *  (this will trigger Sweet Alert)
      */
     $data = [
-        "status" => "$status",
-        "message" => "$message",
-        "error" => $error,
-        "files" => $_FILES,
-        "post" => $_POST,
+        "status" => "$status",  // for sweet alert
+        "message" => "$message", // for sweet alert
+        "error" => $error,  // so we can review and debug in console.log
+        "files" => $_FILES, // so we can review and debug in console.log
+        "post" => $_POST, // so we can review and debug in console.log
     ];
     
     header("Content-type: application/json");
