@@ -81,16 +81,20 @@ $dropzone = $modules->get("Dropzone");
 
 if($input->post->dropzoneAjax) {
 
-    try {
+    // error will be in console.log if debug mode is on
+    $error = "";
 
+    try {
+        // upload file to /site/templates/temp/ folder
         echo $dropzone->wireUpload($config->paths->templates . "temp/");
 
+        // set response vars
         $status = "success";
         $message = "Uplaod Complete!";
-        $error = "";
 
     } catch (Exception $e) {
 
+        // set response vars
         $status = "error";
         $message = "Uplaod faild!";
         $error = $e->getMessage();
@@ -100,7 +104,7 @@ if($input->post->dropzoneAjax) {
     /**
      *	Response 
      *	return json response to the dropzone
-     *	@var data array
+     *  (this will trigger Sweet Alert)
      */
     $data = [
         "status" => "$status",
