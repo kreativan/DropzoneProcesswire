@@ -285,7 +285,7 @@ Form
             "formID" => "dropzone-form",
             "buttonID" => "submit-dropzone",
             // load existing images to dropzone field
-            "my_files" => $dropzone->getPageFiles($pages->images),
+            "my_files" => $dropzone->getPageFiles($page->images),
         ];
         
         // Send aditional data
