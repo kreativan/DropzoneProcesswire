@@ -181,8 +181,14 @@ Form
             "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
         ];
         
+        // Send aditional data
+        // In this case $page->id, so we know what page to edit
+        $data = [
+            "page_id" => $page->id,
+        ];
+
         // init dropzone
-        echo $modules->get("Dropzone")->loadDropzone($params);
+        echo $modules->get("Dropzone")->loadDropzone($params, $data);
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
@@ -194,10 +200,14 @@ Form
 ```
 Process
 ```
+<?php
+
 // Add image to a page
 if($input->post->dropzoneAjax) {
     
-    $p = $pages->get("/");
+    $id = $sanitizer->int($input->post->page_id);
+    $p = $pages->get("id=$id");
+
     $dropzone->addFile($p, "images");
 
 }
@@ -205,11 +215,106 @@ if($input->post->dropzoneAjax) {
 // Remove Image
 if($input->post->dropzoneRemove) {
 
-    $p = $pages->get("/");
+    $id = $sanitizer->int($input->post->page_id);
+    $p = $pages->get("id=$id");
+
     $img_field = "images";
     $img_name = $input->post->file_name;
 
     $dropzone->removeFile($p, $img_field, $img_name);
 
 }
+```
+
+## Edit Page 
+Add / remove images and edit other fields on a page.
+```
+<form id="dropzone-form" action="./" method="POST">
+
+    <input class="uk-input" type="text" name="title" value="<?= $page->title ?>">
+
+    <input class="uk-input uk-margin" type="text" name="headline" value="<?= $pages->headline ?>" >
+
+    <input class="uk-input uk-margin" type="text" name="text" value="<?= $pages->text ?>" >
+
+    <?php
+        // set params
+        $params = [
+            "url" => $page->url,
+            "formID" => "dropzone-form",
+            "buttonID" => "submit-dropzone",
+            // Let's enable form submit so we can process form after files upload separately
+            // You can also keep it false, and do eevrything in one ajax request
+            "submitForm" => "true",
+            // load existing images to dropzone field
+            "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
+        ];
+
+        // Send aditional data
+        // In this case $page->id, so we know what page to edit
+        $data = [
+            "page_id" => $page->id,
+            "title" => $page->title,
+            "headline" => $page->headline,
+            "text" => $page->text,
+        ];
+        
+        // init dropzone
+        echo $modules->get("Dropzone")->loadDropzone($params, $data);
+    ?>
+
+    <!-- NOTE: button name needs to be != submit -->
+    <div class="uk-margin">
+        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    </div>
+
+</form>
+
+```
+Process page edit form:
+```
+<?php
+
+$dropzone =  $modules->get("Dropzone");
+
+// Add images first
+if($input->post->dropzoneAjax) { 
+
+    $id = $sanitizer->int($input->post->page_id);
+    $p = $pages->get("id=$id");
+
+    $dropzone->addFile($p, "images");
+
+}
+
+// After ajax response 
+// if form is submited edit the page fields
+// see $params = ["submitForm" => "true"];
+if($input->post->dropzoneSubmit) {
+
+    $id = $sanitizer->int($input->post->page_id);
+    $p = $pages->get("id=$id");
+
+    // edit page fields
+    $p->of(false);
+    $p->headline = $input->post->headline;
+    $p->save();
+
+    echo $dropzone->swal("Success", 'Your form has been submited', 'success');
+
+}
+
+// Manage Image Remove
+if($input->post->dropzoneRemove) {
+
+    $id = $sanitizer->int($input->post->page_id);
+    $p = $pages->get("id=$id");
+
+    $img_field = "images";
+    $img_name = $input->post->file_name;
+
+    $dropzone->removeFile($p, $img_field, $img_name);
+
+}
+
 ```
