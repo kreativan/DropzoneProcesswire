@@ -29,34 +29,34 @@ $dropzone = $modules->get("Dropzone);
 $dropzone->loadDropzone($params, $data);   
 
 // uplaod files using vanila php    
-uploadPHP($dest)    
+$dropzone->uploadPHP($dest)    
 
 // upload files using WireUpload class
-wireUpload($dest, $allowed_files)
+$dropzone->wireUpload($dest, $allowed_files)
 
 // get page images/files to add to dropzone field    
-getPageFiles($page->images)
+$dropzone->getPageFiles($page->images)
 
 // add image to page,    
-fileToPage($page, $field_name = "images", $allowed_files = [])
+$dropzone->fileToPage($page, $field_name = "images", $allowed_files = [])
 
 // delete image from a page     
-deletePageFile($page, "images")   
+$dropzone->deletePageFile($page, "images")   
 
 // check if image exists on a page                 
-fileExists($page, $filed_name = "images", $file_name = "example.jpg")
+$dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg")
 
 // fileToPage() + json response 
-addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
+$dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
 
 // deletePageFile() + json response    
-removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
+$dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
 
 // Sweet Alert init
-swal("Title", "Text", "success/warning/error/info");
+$dropzone->swal("Title", "Text", "success/warning/error/info");
 
 // render numb captcha
-renderCaptcha()  
+$dropzone->renderCaptcha()  
 ```
 
 
