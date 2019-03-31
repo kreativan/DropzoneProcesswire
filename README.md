@@ -5,8 +5,6 @@ This module is built with front-end page edits in mind, for managing files and i
 It can also post aditional data along with the files, or submit the form after ajax uplaod, so you can use it to edit any page field, and make front-end page editing forms.     
 Actually, you can use it for all kind of forms (that needs files handling), like sending emails with attachemnts etc...
 
-**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.
-
 What Dropzone module can do:    
 * It can uplaod your files to a specified destination.
 * It can post aditional data along with the files.
@@ -21,6 +19,28 @@ What Dropzone module can do:
 * It has number (2+3=?) captcha (optional) and custom honeypot spam protection.
 * It can submit all your form fields not just files.
 * It's using Sweet Alert plugin to display alerts and notifications.
+
+**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.
+Manualy set a response
+```
+<?php
+/**
+ *	Response 
+ *	return json response to the dropzone
+ *	@var data array
+ */
+$data = [
+    "status" => "success", // for sweet alert
+    "message" => "Uplaod complete!", // for sweet alert
+    "error" => $error, // log error
+    "files" => $_FILES, // log $_FILES
+    "post" => $_POST, // log $_POST
+];
+
+header("Content-type: application/json");
+echo json_encode($data);
+exit();
+```
 
 ### Methods
 ```
