@@ -20,9 +20,11 @@ What Dropzone module can do:
 * It can submit all your form fields not just files.
 * It's using Sweet Alert plugin to display alerts and notifications.
 
-**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.    
+**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.  
+
 Manualy set a response to review your data.
-```
+
+```php
 <?php
 if($input->post->dropzoneAjax) {
 
@@ -50,7 +52,8 @@ if($input->post->dropzoneAjax) {
 ```
 
 ### Methods
-```
+
+```php
 <?php
 $dropzone = $modules->get("Dropzone);
 
@@ -58,19 +61,19 @@ $dropzone = $modules->get("Dropzone);
 $dropzone->loadDropzone($params, $data);   
 
 // uplaod files using vanila php    
-$dropzone->uploadPHP($dest)    
+$dropzone->uploadPHP($dest);    
 
 // upload files using WireUpload class
-$dropzone->wireUpload($dest, $allowed_files)
+$dropzone->wireUpload($dest, $allowed_files);
 
 // get page images/files to add to dropzone field    
-$dropzone->getPageFiles($page->images)
+$dropzone->getPageFiles($page->images);
 
 // add image/file to the page,    
-$dropzone->fileToPage($page, $field_name = "images", $allowed_files = [])
+$dropzone->fileToPage($page, $field_name = "images", $allowed_files = []);
 
 // delete image/file from a page     
-$dropzone->deletePageFile($page, "images")   
+$dropzone->deletePageFile($page, "images")  ; 
 
 // Add image/file to the page with a json response. fileToPage() + json response 
 $dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
@@ -79,11 +82,11 @@ $dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif',
 $dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
 
 // check if image exists on a page                 
-$dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg")
+$dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg");
 
 // render numb captcha
 // use it inside a form, no additional actions required
-$dropzone->renderCaptcha()  
+$dropzone->renderCaptcha();
 
 // Sweet Alert init
 $dropzone->swal("Title", "Text", "success/warning/error/info");
@@ -93,7 +96,8 @@ $dropzone->swal("Title", "Text", "success/warning/error/info");
 
 ### Params
 Only required parametars are: url, formID and buttonID
-```
+
+```php
 $params = [
     "url" => "./", // url where u want to post data (required)
     "formID" => "dropzone-form", // form css ID, (requierd)
@@ -109,9 +113,11 @@ $params = [
     "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
 ];
 ```
+
 ### Data
 Send aditional data along with the files
-```
+
+```php
 $data = [
     "name" => "Kreativan",
     "page_id" => $page->id,
@@ -123,7 +129,8 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 
 ## Basic Usage - File Uplaod
 Build a form and load dropzone inside
-```
+
+```php
 <form id="dropzone-form" action="./" method="POST">
 
     <?php
@@ -147,7 +154,8 @@ Build a form and load dropzone inside
 ```
 
 Process the form. Note that this part should be on top of your file, before incldouding anything else.
-```
+
+```php
 <?php
 
 $dropzone = $modules->get("Dropzone");
@@ -199,7 +207,8 @@ if($input->post->dropzoneAjax) {
 
 ### Add/Remove images on a page
 Form
-```
+
+```php
 <form id="dropzone-form" action="./" method="POST">
 
     <?php
@@ -229,8 +238,10 @@ Form
 
 </form>
 ```
+
 Process
-```
+
+```php
 <?php
 
 // Add image to a page
@@ -259,7 +270,8 @@ if($input->post->dropzoneRemove) {
 
 ## Edit Page 
 Add / remove images and edit other fields on a page.
-```
+
+```php
 <form id="dropzone-form" action="./" method="POST">
 
     <input class="uk-input" type="text" name="title" value="<?= $page->title ?>">
@@ -302,8 +314,10 @@ Add / remove images and edit other fields on a page.
 </form>
 
 ```
+
 Process page edit form:
-```
+
+```php
 <?php
 
 $dropzone =  $modules->get("Dropzone");
