@@ -37,10 +37,10 @@ $dropzone->wireUpload($dest, $allowed_files)
 // get page images/files to add to dropzone field    
 $dropzone->getPageFiles($page->images)
 
-// add image to page,    
+// add image/file to the page,    
 $dropzone->fileToPage($page, $field_name = "images", $allowed_files = [])
 
-// delete image from a page     
+// delete image/file from a page     
 $dropzone->deletePageFile($page, "images")   
 
 // Add image/file to the page with a json response. fileToPage() + json response 
