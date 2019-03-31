@@ -95,21 +95,21 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 ```php
 <?php
 
-   // Dropzone Ajax Request
+   // Dropzone request (Ajax)
    if($input->post->dropzoneAjax) {
 
        // do something
 
    } 
 
-    // Dropzone Remove Request
+    // Dropzone remove request (Ajax)
     if($input->post->dropzoneRemove) {
 
        // do something
 
     } 
 
-    // Form Submit after dropzone
+    // Form Submit with dropzone ($_POST)
     if($input->post->dropzoneSubmit) {
 
         // do something
@@ -120,6 +120,10 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 ?>
 
 <form id="dropzone-form" action="./" method="POST">
+
+    <input type="text" name="name" placeholder="Name" />
+
+    <input type="email" name="email" placeholder="Email" />
 
     <?php
         // set params
@@ -139,10 +143,13 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
         echo $modules->get("Dropzone")->loadDropzone($params, $data);
     ?>
 
+    <?php
+        // Optional Captcha 
+        echo $dropzone->renderCaptcha();
+    ?>
+
     <!-- NOTE: button name needs to be != submit -->
-    <div class="uk-margin">
-        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
-    </div>
+    <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" /
 
 </form>
 ```
