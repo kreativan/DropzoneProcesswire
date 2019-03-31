@@ -35,7 +35,8 @@ $dropzone->uploadPHP($dest);
 // upload files using WireUpload class
 $dropzone->wireUpload($dest, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
-// get page images/files to add to dropzone field // ["my_files" =>  $dropzone->getPageFiles($page->images)]  
+// get page images/files to add to dropzone field 
+// ["my_files" =>  $dropzone->getPageFiles($page->images)]  
 $dropzone->getPageFiles($page->images);
 
 // add image/file to the page     
