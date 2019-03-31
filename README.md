@@ -102,7 +102,8 @@ Build a form and load dropzone inside
             "formID" => "dropzone-form",
             "buttonID" => "submit-dropzone",
         ];
-
+        
+        // init dropzone
         echo $modules->get("Dropzone")->loadDropzone($params);
     ?>
 
@@ -164,7 +165,49 @@ if($input->post->dropzoneAjax) {
 
 ?>
 ```
-### Add images to the page
-```
 
+### Add/Remove images on a page
+Form
+```
+<form id="dropzone-form" action="./" method="POST">
+
+    <?php
+        // set params
+        $params = [
+            "url" => $page->url,
+            "formID" => "dropzone-form",
+            "buttonID" => "submit-dropzone",
+        ];
+        
+        // init dropzone
+        echo $modules->get("Dropzone")->loadDropzone($params);
+    ?>
+
+    <!-- NOTE: button name needs to be != submit -->
+    <div class="uk-margin">
+        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    </div>
+
+</form>
+```
+Process
+```
+// Add image to a page
+if($input->post->dropzoneAjax) {
+    
+    $p = $pages->get("/");
+    $dropzone->addFile($p, "images");
+
+}
+
+// Remove Image
+if($input->post->dropzoneRemove) {
+
+    $p = $pages->get("/");
+    $img_field = "images";
+    $img_name = $input->post->file_name;
+
+    $dropzone->removeFile($p, $img_field, $img_name);
+
+}
 ```
