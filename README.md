@@ -20,7 +20,7 @@ What Dropzone module can do:
 * It can submit all your form fields not just files.
 * It's using Sweet Alert plugin to display alerts and notifications.
 
-**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.
+**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.    
 Manualy set a response and review your data.
 ```
 <?php
