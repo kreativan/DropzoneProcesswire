@@ -26,28 +26,35 @@ What Dropzone module can do:
 $dropzone = $modules->get("Dropzone);
 
 // init dropzone inside the form    
-$dropzone->loadDropzone($params, $data);    
+$dropzone->loadDropzone($params, $data);   
+
 // uplaod files using vanila php    
-uploadPHP($dest)     
+uploadPHP($dest)    
+
 // upload files using WireUpload class
 wireUpload($dest, $allowed_files)
 
 // get page images/files to add to dropzone field    
 getPageFiles($page->images)
+
 // add image to page,    
 fileToPage($page, $field_name = "images", $allowed_files = [])
+
 // delete image from a page     
 deletePageFile($page, "images")   
+
 // check if image exists on a page                 
 fileExists($page, $filed_name = "images", $file_name = "example.jpg")
 
 // fileToPage() + json response 
 addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
+
 // deletePageFile() + json response    
 removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
 
 // Sweet Alert init
 swal("Title", "Text", "success/warning/error/info");
+
 // render numb captcha
 renderCaptcha()  
 ```
