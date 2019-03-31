@@ -33,22 +33,22 @@ $dropzone->loadDropzone($params, $data);
 $dropzone->uploadPHP($dest);    
 
 // upload files using WireUpload class
-$dropzone->wireUpload($dest, $allowed_files);
+$dropzone->wireUpload($dest, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
 // get page images/files to add to dropzone field    
 $dropzone->getPageFiles($page->images);
 
 // add image/file to the page     
-$dropzone->fileToPage($page, $field_name = "images", $allowed_files = []);
+$dropzone->fileToPage($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
 // delete image/file from a page     
-$dropzone->deletePageFile($page, "images"); 
+$dropzone->deletePageFile($page, $field_name = "images"); 
 
 // Add image/file to the page with a json response. fileToPage() + json response 
-$dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
+$dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
 // Delte image/file from a page with a jesnon respone. deletePageFile() + json response    
-$dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
+$dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
 // check if image exists on a page                 
 $dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg");
