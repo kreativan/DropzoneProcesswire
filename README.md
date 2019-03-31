@@ -158,7 +158,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
     ?>
 
     <!-- NOTE: button name needs to be != submit -->
-    <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" /
+    <input id="submit-dropzone" type="submit" name="dropzoneSubmit" value="Submit" /
 
 </form>
 ```
