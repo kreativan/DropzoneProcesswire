@@ -48,6 +48,11 @@ myDropzone.on("addedfile", function(file) {
 });
 
 
+myDropzone.on("error", function(file, response) {
+    console.log(response);
+});
+
+
 // Add more data to send along with the file as POST data. (optional)
 myDropzone.on("sending", function(file, xhr, formData) {
 
@@ -66,11 +71,17 @@ myDropzone.on("sending", function(file, xhr, formData) {
 
 });
 
-
-myDropzone.on("error", function(file, response) {
-    console.log(response);
+// Do something while processing is in progress
+myDropzone.on("processingmultiple", function(file) {
+    document.getElementById(dropzoneVars.formID).classList.add("dropzone-processing");
+    document.getElementById(dropzoneVars.buttonID).setAttribute("disabled", "disabled");
 });
 
+// Do something while processing is complete
+myDropzone.on("completemultiple", function(file) {
+    document.getElementById(dropzoneVars.formID).classList.remove("dropzone-processing");
+    document.getElementById(dropzoneVars.buttonID).removeAttribute("disabled");
+});
 
 // on success
 myDropzone.on("successmultiple", function(file, response) {

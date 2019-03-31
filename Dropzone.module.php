@@ -374,19 +374,20 @@ class Dropzone extends WireData implements Module {
      */
     public function addFile($p, $page_field, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
 
-        try {
+        
+        if($p->{$page_field}) {
 
-            echo $this->fileToPage($p, $page_field, $allowed_files);
+            $this->fileToPage($p, $page_field, $allowed_files);
 
             $status = "success";
             $message = __("Upload Complete!");
             $error = "";
 
-        } catch (Exception $e) {
+        } else {
 
             $status = "error";
             $message = __("Upload Failed!");
-            $error = $e->getMessage();
+            $error = "$page_field doesnt exists";
 
         }
 
