@@ -21,25 +21,29 @@ What Dropzone module can do:
 * It's using Sweet Alert plugin to display alerts and notifications.
 
 **TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.
-Manualy set a response
+Manualy set a response and review your data.
 ```
 <?php
-/**
- *	Response 
- *	return json response to the dropzone
- *	@var data array
- */
-$data = [
-    "status" => "success", // for sweet alert
-    "message" => "Uplaod complete!", // for sweet alert
-    "error" => $error, // log error
-    "files" => $_FILES, // log $_FILES
-    "post" => $_POST, // log $_POST
-];
+if($input->post->dropzoneAjax) {
 
-header("Content-type: application/json");
-echo json_encode($data);
-exit();
+    /**
+     *	Response 
+     *	return json response to the dropzone
+     *	@var data array
+     */
+    $data = [
+        "status" => "success", // for sweet alert
+        "message" => "Uplaod complete!", // for sweet alert
+        "error" => $error, // log error
+        "files" => $_FILES, // log $_FILES
+        "post" => $_POST, // log $_POST
+    ];
+
+    header("Content-type: application/json");
+    echo json_encode($data);
+    exit();
+
+}
 ```
 
 ### Methods
