@@ -20,36 +20,6 @@ What Dropzone module can do:
 * It can submit all your form fields not just files.
 * It's using Sweet Alert plugin to display alerts and notifications.
 
-**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.  
-
-Manualy set a response to review your data.
-
-```php
-<?php
-if($input->post->dropzoneAjax) {
-
-    // store errors so we can log them
-    $error = "";
-
-    /**
-     *	Response 
-     *	return json response to the dropzone
-     *	@var data array
-     */
-    $data = [
-        "status" => "success", // for sweet alert
-        "message" => "Uplaod complete!", // for sweet alert
-        "error" => $error, // log error
-        "files" => $_FILES, // log $_FILES
-        "post" => $_POST, // log $_POST
-    ];
-
-    header("Content-type: application/json");
-    echo json_encode($data);
-    exit();
-
-}
-```
 
 ### Methods
 
@@ -111,12 +81,7 @@ $params = [
     // Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
     "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
 ];
-```
 
-### Data
-Send aditional data along with the files
-
-```php
 $data = [
     "name" => "Kreativan",
     "page_id" => $page->id,
@@ -125,6 +90,95 @@ $data = [
 
 echo $modules->get("Dropzone)->loadDropzone($params, $data);
 ```
+
+## How to use?
+```php
+<?php
+
+   // Dropzone Ajax Request
+   if($input->post->dropzoneAjax) {
+
+       // do something
+
+   } 
+
+    // Dropzone Remove Request
+    if($input->post->dropzoneRemove) {
+
+       // do something
+
+    } 
+
+    // Form Submit after dropzone
+    if($input->post->dropzoneSubmit) {
+
+        // do something
+
+    } 
+
+
+?>
+
+<form id="dropzone-form" action="./" method="POST">
+
+    <?php
+        // set params
+        $params = [
+            "url" => $page->url,
+            "formID" => "dropzone-form",
+            "buttonID" => "submit-dropzone",
+        ];
+
+        // more data
+        $data = [
+            "name" => "kreativan",
+            "email" => "kreativan@outlook.com",
+        ];
+        
+        // init dropzone
+        echo $modules->get("Dropzone")->loadDropzone($params, $data);
+    ?>
+
+    <!-- NOTE: button name needs to be != submit -->
+    <div class="uk-margin">
+        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    </div>
+
+</form>
+```
+
+## Test 
+**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.  
+
+Manualy set a response to review your data.
+
+```php
+<?php
+if($input->post->dropzoneAjax) {
+
+    // store errors so we can log them
+    $error = "";
+
+    /**
+     *	Response 
+     *	return json response to the dropzone
+     *	@var data array
+     */
+    $data = [
+        "status" => "success", // for sweet alert
+        "message" => "Uplaod complete!", // for sweet alert
+        "error" => $error, // log error
+        "files" => $_FILES, // log $_FILES
+        "post" => $_POST, // log $_POST
+    ];
+
+    header("Content-type: application/json");
+    echo json_encode($data);
+    exit();
+
+}
+```
+
 
 ## Basic Usage - File Uplaod
 Build a form and load dropzone inside
