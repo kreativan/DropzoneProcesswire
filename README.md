@@ -5,6 +5,8 @@ This module is built with front-end page edits in mind, for managing files and i
 It can also post aditional data along with the files, or submit the form after ajax uplaod, so you can use it to edit any page field, and make front-end page editing forms.     
 Actually, you can use it for all kind of forms (that needs files handling), like sending emails with attachemnts etc...
 
+**TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.
+
 What Dropzone module can do:    
 * It can uplaod your files to a specified destination.
 * It can post aditional data along with the files.
