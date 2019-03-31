@@ -43,21 +43,22 @@ $dropzone->fileToPage($page, $field_name = "images", $allowed_files = [])
 // delete image from a page     
 $dropzone->deletePageFile($page, "images")   
 
-// check if image exists on a page                 
-$dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg")
-
-// fileToPage() + json response 
+// Add image/file to the page with a json response. fileToPage() + json response 
 $dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
 
-// deletePageFile() + json response    
+// Delte image/file from a page with a jesnon respone. deletePageFile() + json response    
 $dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'gif', 'png']);
 
-// Sweet Alert init
-$dropzone->swal("Title", "Text", "success/warning/error/info");
+// check if image exists on a page                 
+$dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg")
 
 // render numb captcha
 // use it inside a form, no additional actions required
 $dropzone->renderCaptcha()  
+
+// Sweet Alert init
+$dropzone->swal("Title", "Text", "success/warning/error/info");
+
 ```
 
 
