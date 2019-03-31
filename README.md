@@ -100,6 +100,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 
        // do something
        // uplaod images, process form...
+       
 
    } 
 
@@ -161,7 +162,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 ## Test 
 **TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.  
 
-Manualy set a response to review your data.
+Set the response and echo json to review your data in console.log
 
 ```php
 <?php
