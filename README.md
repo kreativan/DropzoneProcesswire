@@ -21,7 +21,7 @@ What Dropzone module can do:
 * It's using Sweet Alert plugin to display alerts and notifications.
 
 **TIP**: *Enable debug mode in /site/config.php and all responses sent back to dropzone will be logged in console*.    
-Manualy set a response and review your data.
+Manualy set a response to review your data.
 ```
 <?php
 if($input->post->dropzoneAjax) {
