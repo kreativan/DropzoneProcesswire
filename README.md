@@ -56,6 +56,7 @@ $dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'g
 $dropzone->swal("Title", "Text", "success/warning/error/info");
 
 // render numb captcha
+// use it inside a form, no additional actions required
 $dropzone->renderCaptcha()  
 ```
 
