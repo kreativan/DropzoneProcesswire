@@ -37,7 +37,7 @@ var myDropzone = new Dropzone("#"+dropzoneVars.id, {
     dictInvalidFileType: dropzoneText.file_type,
     dictCancelUpload: dropzoneText.cancel,
     dictRemoveFile: dropzoneText.remove,
-    dictMaxFilesExceeded: "{{maxFiles}}" + dropzoneText.max_files,
+    dictMaxFilesExceeded: "{{maxFiles}} " + dropzoneText.max_files,
     dictDefaultMessage: dropzoneText.message,
 });
 

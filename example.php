@@ -36,7 +36,7 @@ if($input->post->dropzoneSubmit) {
     d($_POST);
     print_r($_POST);
 
-    $dropzone->swal("Success", "You done it! Bravo!", "success")
+    $dropzone->swal("Success", "You done it! Bravo!", "success");
     
 }
 
