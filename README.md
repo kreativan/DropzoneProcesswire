@@ -54,7 +54,7 @@ if($input->post->dropzoneAjax) {
 ### Methods
 
 ```php
-<?php
+
 $dropzone = $modules->get("Dropzone);
 
 // init dropzone inside the form    
@@ -69,11 +69,11 @@ $dropzone->wireUpload($dest, $allowed_files);
 // get page images/files to add to dropzone field    
 $dropzone->getPageFiles($page->images);
 
-// add image/file to the page,    
+// add image/file to the page     
 $dropzone->fileToPage($page, $field_name = "images", $allowed_files = []);
 
 // delete image/file from a page     
-$dropzone->deletePageFile($page, "images")  ; 
+$dropzone->deletePageFile($page, "images"); 
 
 // Add image/file to the page with a json response. fileToPage() + json response 
 $dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg','gif', 'png']);
