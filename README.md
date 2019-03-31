@@ -39,7 +39,7 @@ $params = [
 ];
 ```
 ### Data
-Send aditional data along with files
+Send aditional data along with the files
 ```
 $data = [
     "name" => "Kreativan",
@@ -48,4 +48,73 @@ $data = [
 ];
 
 echo $modules->get("Dropzone)->loadDropzone($params, $data);
+```
+### Basic Usage
+Build a form and load dropzone inside
+```
+<form id="dropzone-form" action="./" method="POST">
+
+    <?php
+        // set params
+        $params = [
+            "url" => $page->url,
+            "formID" => "dropzone-form",
+            "buttonID" => "submit-dropzone",
+        ];
+
+        echo $modules->get("Dropzone")->loadDropzone($params);
+    ?>
+
+    <!-- NOTE: button name needs to be != submit -->
+    <div class="uk-margin">
+        <input id="submit-dropzone" class="uk-button uk-button-primary" type="submit" name="dropzoneSubmit" value="Submit" />
+    </div>
+
+</form>
+```
+
+Process the form. Note that this part should be on top of your file, before incldouding anything else.
+```
+<?php
+
+$dropzone = $modules->get("Dropzone");
+
+if($input->post->dropzoneAjax) {
+
+    try {
+
+        echo $dropzone->wireUpload($config->paths->templates . "temp/");
+
+        $status = "success";
+        $message = "Uplaod Complete!";
+        $error = "";
+
+    } catch (Exception $e) {
+
+        $status = "error";
+        $message = "Uplaod faild!";
+        $error = $e->getMessage();
+
+    }
+
+    /**
+     *	Response 
+     *	return json response to the dropzone
+     *	@var data array
+     */
+    $data = [
+        "status" => "$status",
+        "message" => "$message",
+        "error" => $error,
+        "files" => $_FILES,
+        "post" => $_POST,
+    ];
+    
+    header("Content-type: application/json");
+    echo json_encode($data);
+    exit();
+
+}
+
+?>
 ```
