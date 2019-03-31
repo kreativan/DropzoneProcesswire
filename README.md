@@ -54,7 +54,6 @@ if($input->post->dropzoneAjax) {
 ### Methods
 
 ```php
-
 $dropzone = $modules->get("Dropzone);
 
 // init dropzone inside the form    
