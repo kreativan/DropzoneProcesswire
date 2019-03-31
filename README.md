@@ -26,35 +26,35 @@ What Dropzone module can do:
 ```php
 $dropzone = $modules->get("Dropzone);
 
-// init dropzone inside the form    
+// Init dropzone inside the form    
 $dropzone->loadDropzone($params, $data);   
 
-// uplaod files using vanila php    
+// Uplaod files using vanila php    
 $dropzone->uploadPHP($dest);    
 
-// upload files using WireUpload class
+// Upload files using WireUpload class
 $dropzone->wireUpload($dest, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
-// get page images/files to add to dropzone field 
+// Get page images/files to add to dropzone field 
 // ["my_files" =>  $dropzone->getPageFiles($page->images)]  
 $dropzone->getPageFiles($page->images);
 
-// add image/file to the page     
+// Add image/file to the page     
 $dropzone->fileToPage($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
-// delete image/file from a page     
+// Delete image/file from a page     
 $dropzone->deletePageFile($page, $field_name = "images"); 
 
 // Add image/file to the page with a json response. fileToPage() + json response 
 $dropzone->addFile($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
-// Delte image/file from a page with a jesnon respone. deletePageFile() + json response    
+// Delete image/file from a page with a jesnon respone. deletePageFile() + json response    
 $dropzone->removeFile($page, $field_name = "images", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']);
 
-// check if image exists on a page                 
+// Check if image exists on a page                 
 $dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg");
 
-// render numb captcha
+// Render numb captcha
 // use it inside a form, no additional actions required
 $dropzone->renderCaptcha();
 
