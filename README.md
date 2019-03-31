@@ -59,6 +59,7 @@ swal("Title", "Text", "success/warning/error/info");
 renderCaptcha()  
 ```
 
+
 ### Params
 Only required parametars are: url, formID and buttonID
 ```
