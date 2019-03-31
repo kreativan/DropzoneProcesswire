@@ -99,6 +99,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
    if($input->post->dropzoneAjax) {
 
        // do something
+       // uplaod images, process form...
 
    } 
 
@@ -106,6 +107,7 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
     if($input->post->dropzoneRemove) {
 
        // do something
+       // delete image from page or server...
 
     } 
 
@@ -113,6 +115,8 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
     if($input->post->dropzoneSubmit) {
 
         // do something
+        // this is "normal" form submit
+        // do something with $_POST variables
 
     } 
 
