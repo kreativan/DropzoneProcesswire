@@ -356,7 +356,7 @@ Add / remove images and edit other fields on a page.
             // You can also keep it false, and do eevrything in one ajax request
             "submitForm" => "true",
             // load existing images to dropzone field
-            "my_files" => $dropzone->getPageFiles($pages->get("/")->images),
+            "my_files" => $dropzone->getPageFiles($page->images),
         ];
 
         // Send aditional data
