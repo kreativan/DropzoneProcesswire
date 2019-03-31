@@ -101,7 +101,8 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 
        // do something
        // uplaod images, process form...
-       
+
+        exit();
 
    } 
 
@@ -110,6 +111,8 @@ echo $modules->get("Dropzone)->loadDropzone($params, $data);
 
        // do something
        // delete image from page or server...
+
+        exit();
 
     } 
 
