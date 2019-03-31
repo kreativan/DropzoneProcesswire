@@ -26,6 +26,9 @@ Manualy set a response to review your data.
 <?php
 if($input->post->dropzoneAjax) {
 
+    // store errors so we can log them
+    $error = "";
+
     /**
      *	Response 
      *	return json response to the dropzone
