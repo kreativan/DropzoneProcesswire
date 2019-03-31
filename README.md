@@ -11,9 +11,9 @@ What Dropzone module can do:
 * It can submit your form as normal after uploading files.
 * It can load existing files/images into the field.
 * It sends post request on file remove, so you can use it to delete files from a server or a page. 
-* Yes, it can remove images/file from processwire page field.
-* And yeah, it can add images/files toa  processeire page field.
-* It has bult in methods for adding and removing fields froma page field 
+* Yes, it can remove images/file from processwire page.
+* And yeah, it can add images/files toa  processeire page.
+* It has bult in methods for adding and removing fields from a page 
 * If you have a debug mode enabled, it will console.log json response from php so you can review and debug posted data.
 * It has basic form and file validations.
 * It has number (2+3=?) captcha (optional) and custom honeypot spam protection.
@@ -252,7 +252,7 @@ Add / remove images and edit other fields on a page.
         ];
 
         // Send aditional data
-        // In this case $page->id, so we know what page to edit
+        // In this case $page->id and few more page fields
         $data = [
             "page_id" => $page->id,
             "title" => $page->title,
@@ -289,23 +289,31 @@ if($input->post->dropzoneAjax) {
 }
 
 // After ajax response 
-// if form is submited edit the page fields
+// if form is submited edit page fields
 // see $params = ["submitForm" => "true"];
+
 if($input->post->dropzoneSubmit) {
 
+    // get the page
     $id = $sanitizer->int($input->post->page_id);
     $p = $pages->get("id=$id");
 
+    $title      = $sanitizer->text($input->post->title);
+    $headline   = $sanitizer->text($input->post->headline);
+    $text       = $sanitizer->textarea($input->post->text);
+
     // edit page fields
     $p->of(false);
-    $p->headline = $input->post->headline;
+    $p->title = $title;
+    $p->headline = $headline;
+    $p->text = $text;
     $p->save();
 
-    echo $dropzone->swal("Success", 'Your form has been submited', 'success');
+    echo $dropzone->swal("Success", "$p->title has been saved", 'success');
 
 }
 
-// Manage Image Remove
+// Manage Image Removes
 if($input->post->dropzoneRemove) {
 
     $id = $sanitizer->int($input->post->page_id);
@@ -319,3 +327,5 @@ if($input->post->dropzoneRemove) {
 }
 
 ```
+
+#### This are some quick examples, for more look and the examples folder.
