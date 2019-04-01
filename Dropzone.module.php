@@ -95,15 +95,15 @@ class Dropzone extends WireData implements Module {
         $thumbnailWidth         = !empty($params["thumbnailWidth"]) ? $params["thumbnailWidth"] : 120;
         $thumbnailHeight        = !empty($params["thumbnailHeight"]) ? $params["thumbnailHeight"] : 120;
 
-        $textMessage        = !empty($params["textMessage"]) ? $params["textMessage"] : __("Drop files here to upload");
-        $textMaxSize        = !empty($params["textMaxSize"]) ? $params["textMaxSize"] : __("Max allowed file size is");
-        $textMaxFiles       = !empty($params["textMaxFiles"]) ? $params["textMaxFiles"] : __("files are allowed");
-        $textFileType       = !empty($params["textFileType"]) ? $params["textFileType"] : __("Invalid File Type");
-        $textCancel         = !empty($params["textCancel"]) ? $params["textCancel"] : __("Cancel");
-        $textRemove         = !empty($params["textRemove"]) ? $params["textRemove"] : __("Remove");
-        $textAreYouSure     = !empty($params["textAreYouSure"]) ? $params["textAreYouSure"] : __("Are you Sure?");
-        $textFormInvalid    = !empty($params["textFormInvalid"]) ? $params["textFormInvalid"] : __("Form invalid");
-        $textCheckFields    = !empty($params["textCheckFields"]) ? $params["textCheckFields"] : __("Please fill in all required fields");
+        $textMessage        = __("Drop files here to upload");
+        $textMaxSize        = __("Max allowed file size is");
+        $textMaxFiles       = __("files are allowed");
+        $textFileType       = __("Invalid File Type");
+        $textCancel         = __("Cancel");
+        $textRemove         = __("Remove");
+        $textAreYouSure     = __("Are you Sure?");
+        $textFormInvalid    = __("Form invalid");
+        $textCheckFields    = __("Please fill in all required fields");
 
         // images
         $my_files = !empty($params["my_files"]) ? $params["my_files"] : "";
@@ -223,7 +223,7 @@ class Dropzone extends WireData implements Module {
         if(!empty($page_field) && $page_field->count) {
             foreach($page_field as $f) {
                 $arr[] = [
-                    "url" => $f->($thumb_size, $thumb_size)->url, 
+                    "url" => $f->size($thumb_size, $thumb_size)->url,
                     "name" => $f->basename, 
                     "size" => $f->filesize
                 ];

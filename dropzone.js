@@ -337,7 +337,7 @@ function dropzoneRemoveReq(file, _this) {
  */
 function dropzoneRemoveButton(file, _this) {
 
-    var removeButton = Dropzone.createElement("<button class='dropzone-remove'>Remove</button>");
+    var removeButton = Dropzone.createElement("<button class='dropzone-remove'><i class='fas fa-times'></i></button>");
     //var _this = this;
 
     // Listen to the click event
