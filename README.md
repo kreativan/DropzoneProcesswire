@@ -89,7 +89,7 @@ $data = [
     "page_name" => $page->name,
 ];
 
-echo $modules->get("Dropzone)->loadDropzone($params, $data);
+echo $modules->get("Dropzone")->loadDropzone($params, $data);
 ```
 
 ## How to use?
