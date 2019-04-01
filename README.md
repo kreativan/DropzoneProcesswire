@@ -24,7 +24,7 @@ What Dropzone module can do:
 ### Methods
 
 ```php
-$dropzone = $modules->get("Dropzone);
+$dropzone = $modules->get("Dropzone");
 
 // Init dropzone inside the form    
 $dropzone->loadDropzone($params, $data);   
