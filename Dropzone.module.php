@@ -210,19 +210,20 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Create images/files array to send to dropzone as existing images.
-     *  @var page_field    object, page images/files field
+     *  @var page_field     object, page images/files field
+	 *	@var thumb_size		str, thumbnail crop size
      *  @example $this->getPageFiles($page->images); 
      *  @return array ["url" => "", "name" => "", "size" => ""]
      * 
      */
-    public function getPageFiles($page_field) {
+    public function getPageFiles($page_field, $thumb_size = "120") {
 
         $arr = [];
 
         if(!empty($page_field) && $page_field->count) {
             foreach($page_field as $f) {
                 $arr[] = [
-                    "url" => $f->url, 
+                    "url" => $f->($thumb_size, $thumb_size)->url, 
                     "name" => $f->basename, 
                     "size" => $f->filesize
                 ];
