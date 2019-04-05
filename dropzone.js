@@ -352,6 +352,7 @@ function dropzoneRemoveButton(file, _this) {
 
         Swal.fire({
             title: dropzoneText.are_you_sure,
+            type: "question",
             showCancelButton: true,
         }).then((result) => {
             if (result.value) {

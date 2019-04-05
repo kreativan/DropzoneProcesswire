@@ -322,7 +322,7 @@ class Dropzone extends WireData implements Module {
      *  Sweet Alert
      *  @param title    str
      *  @param text     str
-     *  @param icon     str, success/warning/error/question/info
+     *  @param type     str, success/warning/error/question/info
      * 
      */
     public function swal($title, $text, $type) {
