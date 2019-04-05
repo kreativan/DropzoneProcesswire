@@ -96,14 +96,14 @@ myDropzone.on("successmultiple", function(file, response) {
 
     } else if (response.status && response.message) {
         
+        Swal.fire({
 
-        swal(
-            title = response.status, 
-            text = response.message, 
-            icon = response.status,
-        )
-        .then((value) => { 
+            title: response.status, 
+            text: response.message, 
+            type: response.status,
 
+        }).then((result) => {
+            
             if (dropzoneVars.redirect === true && response.status != "error") {
                 window.location.href = dropzoneVars.current_url;
             } else if (response.status != "error") {
@@ -114,6 +114,7 @@ myDropzone.on("successmultiple", function(file, response) {
             this.removeAllFiles();
 
         });
+        
             
     }
 
@@ -182,12 +183,11 @@ function submitDropzone() {
 
             } else {
                 if (dropzoneVars.debug === true) console.log(validateForm);
-                swal(
-                    title = dropzoneText.form_invalid, 
-                    //text = dropzoneText.check_fields + " " + validateForm.errors, 
-                    text = dropzoneText.check_fields, 
-                    icon = "warning",
-                )
+                Swal.fire({
+                    title: dropzoneText.form_invalid, 
+                    text: dropzoneText.check_fields, 
+                    type: 'warning'
+                });
             }
 
         });
@@ -350,14 +350,13 @@ function dropzoneRemoveButton(file, _this) {
         //_this.removeFile(file);
         //console.log(file.name);
 
-        swal({
+        Swal.fire({
             title: dropzoneText.are_you_sure,
-            buttons: true,
-        })
-        .then((ok) => {
-            if (ok) {
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value) {
                 dropzoneRemoveReq(file, _this);
-            } 
+            }
         });
         
 

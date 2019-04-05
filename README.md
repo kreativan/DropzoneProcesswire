@@ -59,7 +59,10 @@ $dropzone->fileExists($page, $filed_name = "images", $file_name = "example.jpg")
 $dropzone->renderCaptcha();
 
 // Sweet Alert init
-$dropzone->swal("Title", "Text", "success/warning/error/info");
+$dropzone->swal("Title", "Text", "success/warning/error/question/info");
+
+// Sweet Alert Mini init
+$dropzone->swal("Title", "success/warning/error/question/info", "top-end");
 
 ```
 

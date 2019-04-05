@@ -36,7 +36,7 @@ if($input->post->dropzoneSubmit) {
     $p->headline = $input->post->headline;
     $p->save();
 
-    echo $dropzone->swal("Success", 'Your form has been submited', 'success');
+    echo $dropzone->swal("Success!", 'Page has been saved', 'success');
 
 }
 

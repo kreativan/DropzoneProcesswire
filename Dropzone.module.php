@@ -70,7 +70,8 @@ class Dropzone extends WireData implements Module {
     public function loadDropzone($params = [], $data = []) {
 
         // Load Scripts
-        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/sweetalert.min.js");
+        // $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/sweetalert.min.js");
+        $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/sweetalert2.all.min.js");
         $this->config->styles->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.css");
         $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/assets/dropzone.min.js");
         $this->config->scripts->append($this->config->urls->siteModules . $this->className() . "/dropzone.js");
@@ -223,7 +224,7 @@ class Dropzone extends WireData implements Module {
         if(!empty($page_field) && $page_field->count) {
             foreach($page_field as $f) {
                 $arr[] = [
-                    "url" => $f->size($thumb_size, $thumb_size)->url,
+                    "url" => $f->size($thumb_size, $thumb_size)->url, 
                     "name" => $f->basename, 
                     "size" => $f->filesize
                 ];
@@ -321,15 +322,52 @@ class Dropzone extends WireData implements Module {
      *  Sweet Alert
      *  @param title    str
      *  @param text     str
-     *  @param icon     str, success/error/warning/info
+     *  @param icon     str, success/warning/error/question/info
      * 
      */
-    public function swal($title, $text, $icon) {
+    public function swal($title, $text, $type) {
 
         $swal = "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    swal('$title', '$text', '$icon');
+                    Swal.fire(
+                      '$title',
+                      '$text',
+                      '$type'
+                    )
+                }, false);
+            </script>
+        ";
+
+        return $swal;
+
+    }
+
+    /**
+     *  Sweet Alert Mini
+     *  @param title    str
+     *  @param type     str, success/error/warning/info/question
+     *  @param pos      top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', or 'bottom-end'.
+     * 
+     */
+    public function swalMini($title, $type = "success", $pos = "top-end") {
+
+        $swal = "
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: '$pos',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    Toast.fire({
+                      type: '$type',
+                      title: '$title'
+                    })
+
                 }, false);
             </script>
         ";
