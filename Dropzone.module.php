@@ -45,25 +45,26 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Load Dropzone
-     *  @param array $params                main array of params
-     *  @param array $data                  data you wish to POST along with files
-     *  
-     *  @param bool|string $submitForm      submit form after dropzone Ajax request, default = false (optional)
-     *  @param bool|string $redirect        redirect to the same page after modal confim, only works if submitForm = false
-     *  @param string url                   url where u want to post data (required)
-     *  @param string id                    dropzone field css id, default = dropzone (optional)
-     *  @param string formID                form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
-     *  @param string buttonID              submit button css ID, default = submit-dropzone (required)
+     *  @param array $params  Main array of params
      * 
-     *  @param string acceptedFiles         allowed files (.jpg,.png,.pdf), default = image/*
-     *  @param integer maxFiles             max number of files allowed, default = 5 (optional)
-     *  @param float maxFilesize            max file size allowed in MB, default = 0.3 (optional)
-     *  @param bool uploadMultiple          no used currently
-     *  @param bool addRemoveLinks          not used, using custom remove button so we can use custom modal confirm
-     *  @param bool confirmRemove           not used, using custom remove button
-     *  @param bool createImageThumbnails   create thumbnails on image add, default = "true" (optional)
-     *  @param integer thumbnailWidth       thumbnail width, default = 120 (optional)
-     *  @param integer thumbnailHeight      thumbnail height, default = 120 (optional)
+     *  ["submitForm"]  (bool|string)   Submit form after dropzone Ajax request, default = false (optional)
+     *  ["redirect"]    (bool|string)   Redirect to the same page after modal confim, only works if submitForm = false
+     *  ["url"]         (string)        Url where u want to post data (required)
+     *  ["id"]          (string)        Dropzone field css id, default = dropzone (optional)
+     *  ["formID"]      (string)        Form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
+     *  ["buttonID"]    (string)        Submit button css ID, default = submit-dropzone (required)
+     * 
+     *  @param array $data  Data you wish to POST along with files
+     * 
+     *  ["acceptedFiles"]           (string)    Allowed files (.jpg,.png,.pdf), default = image/*
+     *  ["maxFiles"]                (integer)   Max number of files allowed, default = 5 (optional)
+     *  ["maxFilesize"]             (float)     Max file size allowed in MB, default = 0.3 (optional)
+     *  ["uploadMultiple"]          (bool)      No used currently
+     *  ["addRemoveLinks"]          (bool)      Not used, using custom remove button so we can use custom modal confirm
+     *  ["confirmRemove"]           (bool)      Not used, using custom remove button
+     *  ["createImageThumbnails"]   (bool)      Create thumbnails on image add, default = "true" (optional)
+     *  ["thumbnailWidth"]          (integer)   Thumbnail width, default = 120 (optional)
+     *  ["thumbnailHeight"]         (integer)   Thumbnail height, default = 120 (optional)
      * 
      *  @param array $my_files               Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
      * 
