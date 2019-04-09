@@ -10,22 +10,23 @@
  *  Also handles basic form validation and custom captcha.
  *
  *  @author Ivan Milincic <kreativan@outlook.com>
- *  @copyright 2019 Kreativan
+ *  @copyright 2019 kreativan.net
+ *  @link http://www.kreativan.net
  *
- *  @method loadDropzone()      // init dropzone inside the form
- *  @method uploadPHP()         // uplaod files using vanila php
- *  @method wireUpload()        // upload files using WireUpload class
+ *  loadDropzone()      init dropzone inside the form
+ *  uploadPHP()         uplaod files using vanila php
+ *  wireUpload()        upload files using WireUpload class
  * 
- *  @method getPageFiles()      // get page images, returns dropzone image array
- *  @method fileToPage()        // add image to page,
- *  @method deletePageFile()    // delete image from a page
- *  @method fileExists()        // check if image exists on a page
+ *  getPageFiles()      get page images, returns dropzone image array
+ *  fileToPage()        add image to page,
+ *  deletePageFile()    delete image from a page
+ *  fileExists()        heck if image exists on a page
  * 
- *  @method addFile             // fileToPage() + json response 
- *  @method removeFile          // deletePageFile() + json response
+ *  addFile             fileToPage() + json response 
+ *  removeFile          deletePageFile() + json response
  *  
- *  @method swal()              // Sweet Alert init
- *  @method renderCaptcha()     // render numb captcha
+ *  swal()              Sweet Alert init
+ *  renderCaptcha()     render numb captcha
  * 
 */
 
@@ -44,27 +45,27 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Load Dropzone
-     *  @param params array
-     *  @param data   array // data you wish to POST along with files
+     *  @param array $params                main array of params
+     *  @param array $data                  data you wish to POST along with files
      *  
-     *  @var submitForm                 bool/string // submit form after dropzone Ajax request, default = false (optional)
-     *  @var redirect                   bool/string // redirect to the same page after modal confim, only works if submitForm = false
-     *  @var url                        string // url where u want to post data (required)
-     *  @var id                         string // dropzone field css id, default = dropzone (optional)
-     *  @var formID                     string // form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
-     *  @var buttonID                   string // submit button css ID, default = submit-dropzone (required)
+     *  @param bool|string $submitForm      submit form after dropzone Ajax request, default = false (optional)
+     *  @param bool|string $redirect        redirect to the same page after modal confim, only works if submitForm = false
+     *  @param string url                   url where u want to post data (required)
+     *  @param string id                    dropzone field css id, default = dropzone (optional)
+     *  @param string formID                form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
+     *  @param string buttonID              submit button css ID, default = submit-dropzone (required)
      * 
-     *  @var acceptedFiles              string // allowed files (.jpg,.png,.pdf), default = image/*
-     *  @var maxFiles                   integer // max number of files allowed, default = 5 (optional)
-     *  @var maxFilesize                float // max file size allowed in MB, default = 0.3 (optional)
-     *  @var uploadMultiple             bool // no used currently
-     *  @var addRemoveLinks             bool // not used, using custom remove button so we can use custom modal confirm
-     *  @var confirmRemove              bool // not used, using custom remove button
-     *  @var createImageThumbnails      bool // create thumbnails on image add, default = "true" (optional)
-     *  @var thumbnailWidth             integer // thumbnail width, default = 120 (optional)
-     *  @var thumbnailHeight            integer // thumbnail height, default = 120 (optional)
+     *  @param string acceptedFiles         allowed files (.jpg,.png,.pdf), default = image/*
+     *  @param integer maxFiles             max number of files allowed, default = 5 (optional)
+     *  @param float maxFilesize            max file size allowed in MB, default = 0.3 (optional)
+     *  @param bool uploadMultiple          no used currently
+     *  @param bool addRemoveLinks          not used, using custom remove button so we can use custom modal confirm
+     *  @param bool confirmRemove           not used, using custom remove button
+     *  @param bool createImageThumbnails   create thumbnails on image add, default = "true" (optional)
+     *  @param integer thumbnailWidth       thumbnail width, default = 120 (optional)
+     *  @param integer thumbnailHeight      thumbnail height, default = 120 (optional)
      * 
-     *  @var my_files                   array // Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
+     *  @param array $my_files               Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
      * 
      */
     public function loadDropzone($params = [], $data = []) {
@@ -167,7 +168,7 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Upload files using vanilla php
-     *  @var dest   string, destination folder
+     *  @param string $dest destination folder
      * 
      */
     public function uploadPHP($dest = "") {
@@ -189,8 +190,8 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Uplaod files using WireUpload class
-     *  @param dest             string, destination folder
-     *  @param allowed_files    array, this is required for WireUpload
+     *  @param string $dest            destination folder
+     *  @param array $allowed_files    this is required for WireUpload
      * 
      */
     public function wireUpload($dest = "", $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
@@ -211,8 +212,8 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Create images/files array to send to dropzone as existing images.
-     *  @var page_field     object, page images/files field
-	 *	@var thumb_size		str, thumbnail crop size
+     *  @param page|object $page_field     page images/files field
+	 *	@param string $thumb_size		     thumbnail crop size
      *  @example $this->getPageFiles($page->images); 
      *  @return array ["url" => "", "name" => "", "size" => ""]
      * 
@@ -238,9 +239,9 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Add images/files to the page
-     *  @param p                page object
-     *  @param page_field        str, page images/files field name
-     *  @param allowed_files    array, this is required for WireUpload
+     *  @param Page|object $p 
+     *  @param string $page_field       page images/files field name
+     *  @param array $allowed_files     ['jpg', 'jpeg', 'gif', 'png']
      * 
      */
     public function fileToPage($p, $page_field, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
@@ -267,16 +268,16 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Delete image/file from a page 
-     *  @param p                page object
-     *  @param page_field        str, page images/files field name
-     *  @param file_name         str, image/file basename, optional, if not spefified $input->post->file_name will be used
+     *  @param page|object $p 
+     *  @param string $page_field        page images/files field name
+     *  @param string $file_name         image/file basename, optional, if not spefified $input->post->file_name will be used
      * 
-     *  POST: $input->post(@var)
-     *  @var dropzoneRemove     str, 1, to check for request @example if ($input->post->dropzoneRemove) {...}
-     *  @var file_url           url, image/file url
-     *  @var file_name          str, image/file basename,
-     *  @var accepted           bool, true / false
-     *  @var type               str, eg: "image/jpeg"
+     *  $_POST will return this: $input->post->@var
+     *  @var string $dropzoneRemove  value = 1, so we can check for request @example if ($input->post->dropzoneRemove) {...}
+     *  @var url|string $file_url    image/file url
+     *  @var string $file_name       image/file basename,
+     *  @var bool $accepted          true / false
+     *  @var string $type            eg: "image/jpeg"
      * 
      */
     public function deletePageFile($p, $page_field, $file_name) {
@@ -303,9 +304,9 @@ class Dropzone extends WireData implements Module {
     
     /**
      *  Check if image/file exists on a page
-     *  @param p                page object 
-     *  @param page_field        str, page images/files field name
-     *  @param file_name         str, image/file basename, @example example.jpg
+     *  @param page|object $p
+     *  @param string $page_field      page images/files field name
+     *  @param string $file_name      image/file basename, @example example.jpg
      *  @return bool
      * 
      */
@@ -320,9 +321,9 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Sweet Alert
-     *  @param title    str
-     *  @param text     str
-     *  @param type     str, success/warning/error/question/info
+     *  @param string $title
+     *  @param string $text
+     *  @param string $type  success/warning/error/question/info
      * 
      */
     public function swal($title, $text, $type) {
@@ -345,9 +346,9 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Sweet Alert Mini
-     *  @param title    str
-     *  @param type     str, success/error/warning/info/question
-     *  @param pos      top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', or 'bottom-end'.
+     *  @param string $title 
+     *  @param string $type  success/error/warning/info/question
+     *  @param string $pos   top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', or 'bottom-end'.
      * 
      */
     public function swalMini($title, $type = "success", $pos = "top-end") {
@@ -404,11 +405,11 @@ class Dropzone extends WireData implements Module {
 
     /**
      *  Add images/files to the page and return json response
-     *  @param p                page object
-     *  @param page_field       str, page images/files field name
-     *  @param allowed_files    array, this is required for WireUpload
+     *  @param page|object $p
+     *  @param string $page_field     page images/files field name
+     *  @param array $allowed_files   this is required for WireUpload
      *  
-     *  @see @method fileToPage()
+     *  @see $this->fileToPage()
      *  
      */
     public function addFile($p, $page_field, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
@@ -453,12 +454,12 @@ class Dropzone extends WireData implements Module {
     /**
      *  Send Dropzone Image remove request and return json response
      * 
-     *  @param p                page object
-     *  @param page_field        str, page images/files field name
-     *  @param file_name         str, image/file basename, optional, if not spefified $input->post->file_name will be used
+     *  @param page|object $p 
+     *  @param string $page_field   page images/files field name
+     *  @param string $file_name    image/file basename, optional, if not spefified $input->post->file_name will be used
      * 
-     *  @see @method deletePageFile()
-     *  @see @method fileExists()
+     *  @see $this->deletePageFile()
+     *  @see $this->fileExists()
      * 
      */
     public function removeFile($p, $page_field, $file_name) {
@@ -487,7 +488,7 @@ class Dropzone extends WireData implements Module {
         /**
          *	Response 
          *	return json response to the dropzone
-         *	@var data array
+         *	@var array $data
          */
         $data = [
             "status" => "$status",

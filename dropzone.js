@@ -4,9 +4,9 @@
  *  @author Ivan Milincic <kreativan@outlook.com>
  *  @copyright 2019 Kreativan
  *  
- *  @var dropzoneVars object // dropzone variables
- *  @var dropzoneData object // data we want to POST along with files
- *  @var dropzoneText object // text strings
+ *  @param {object} dropzoneVars - dropzone variables
+ *  @param {object} dropzoneData - data we want to POST along with files
+ *  @param {object} dropzoneText - text strings
  * 
  *
 */
@@ -124,7 +124,7 @@ myDropzone.on("successmultiple", function(file, response) {
 /**
  *  Add existing images to the dropzone
  *  We got imaegs from dz variable we passed from php
- *  @var dropzoneVars.my_files
+ *  @param {object} dropzoneVars.my_files
  *
  */
 for(let i = 0; i < dropzoneVars.my_files.length; i++) {
@@ -152,10 +152,10 @@ for(let i = 0; i < dropzoneVars.my_files.length; i++) {
 /**
  *  Trigger on button click
  *  processingQueue and (optionaly) submit the form after sending files
- *  @var dropzoneVars.buttonID
- *  @function dropzoneFormSubmit()    // submits the form
- *  @function dropzoneFormValidate()  // validates the form
- *  @function dropzoneCaptcha()       // validate captcha
+ *  @param {string} dropzoneVars.buttonID
+ *  @function dropzoneFormSubmit() - submits the form
+ *  @function dropzoneFormValidate() - validates the form
+ *  @function dropzoneCaptcha() - validate captcha
  * 
  */
 function submitDropzone() {
@@ -207,7 +207,7 @@ submitDropzone();
 /**
  *  Submit form 
  *  based on the form css ID
- *  @var dropzoneVars.formID
+ *  @param {string} dropzoneVars.formID
  * 
  */
 function dropzoneFormSubmit() {
@@ -231,7 +231,7 @@ function dropzoneFormSubmit() {
 /**
  *  Reset form fields values
  *  use this after ajax form submit
- *  @var dropzoneVars.formID
+ *  @param {string} dropzoneVars.formID
  *  
  */
 function dropzoneResetFields() {
@@ -255,7 +255,7 @@ function dropzoneResetFields() {
 /**
  *  Get all form fields
  *  and append them to form data 
- *  @param formData = new FormData();
+ *  @param {object} formData = new FormData();
  * 
  */
 function dropzoneAppendFormFelds(formData) {
@@ -285,9 +285,9 @@ function dropzoneAppendFormFelds(formData) {
 
 /**
  *  Send file remove Request
- *  @param file         dropzone file // requierd
- *  @param _this        this // this dropzone instance
- *  @var dropzoneData   object // custom data provided by php
+ *  @param {object} file         - dropzone file // requierd
+ *  @param {object} _this        - this // this dropzone instance
+ *  @param {object} dropzoneData   - object // custom data provided by php
  * 
  */
 function dropzoneRemoveReq(file, _this) {
@@ -330,8 +330,8 @@ function dropzoneRemoveReq(file, _this) {
 /**
  *  Add custom file remove button 
  *  so we can use confirm modal
- *  @param file   dropzone file // requierd
- *  @param _this  this // this dropzone instance
+ *  @param {object} file   dropzone file // requierd
+ *  @param {object} _this  this // this dropzone instance
  *  @function dropzoneRemoveReq() // send the file remove request   
  * 
  */
@@ -373,7 +373,7 @@ function dropzoneRemoveButton(file, _this) {
 /**
  *  Validate Form
  *  @var  dropzoneVars.formID 
- *  @return response object
+ *  @return object response object
  *  @example dropzoneFormValidate().status;
  */
 function dropzoneFormValidate() {
