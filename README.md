@@ -7,13 +7,13 @@ Actually, you can use it for all kind of forms (that needs files handling), like
 
 What Dropzone module can do:    
 * It can uplaod your files to a specified destination.
-* It can post aditional data along with the files.
+* It can post aditional data along with the images/files.
 * It can submit your form as normal after uploading files.
-* It can load existing files/images into the field.
+* It can load existing images/files into the field.
 * It sends post request on file remove, so you can use it to delete files from a server or a page. 
 * Yes, it can remove images/file from processwire page.
-* And yeah, it can add images/files toa  processeire page.
-* It has bult in methods for adding and removing fields from a page 
+* And yeah, it can add images/files to a processeire page.
+* It has bult in methods for adding and removing files/images from a page.
 * If you have a debug mode enabled, it will console.log json response from php so you can review and debug posted data.
 * It has basic form and file validations.
 * It has number (2+3=?) captcha (optional) and custom honeypot spam protection.
@@ -30,6 +30,7 @@ $dropzone = $modules->get("Dropzone");
 $dropzone->loadDropzone($params, $data);   
 
 // Uplaod files using vanila php    
+// File validation done by dropzone.js
 $dropzone->uploadPHP($dest);    
 
 // Upload files using WireUpload class
