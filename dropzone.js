@@ -185,7 +185,7 @@ function submitDropzone() {
                 if (dropzoneVars.debug === true) console.log(validateForm);
                 Swal.fire({
                     title: dropzoneText.form_invalid, 
-                    text: dropzoneText.check_fields, 
+                    text: dropzoneText.check_fields+" "+`(${validateForm.errors})`, 
                     type: 'warning'
                 });
             }
