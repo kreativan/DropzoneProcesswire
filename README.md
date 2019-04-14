@@ -78,6 +78,7 @@ $params = [
     "buttonID" => "submit-dropzone", // submit button css ID, default = submit-dropzone (required)
     "submitForm" => "false", // submit form after dropzone Ajax request, default = false (optional)
     "redirect" => "true", // redirect to the same page after modal confim, only works if submitForm = false
+	"redirectUrl" => "./",
     "acceptedFiles" => "image/*", // allowed files (.jpg,.png,.pdf), default = image/*
     "maxFiles" => 10, // max number of files allowed, default = 5 (optional)
     "maxFilesize" => 0.3, // max file size allowed in MB, default = 0.3 (optional)

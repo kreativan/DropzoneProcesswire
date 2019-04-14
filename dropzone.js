@@ -105,7 +105,7 @@ myDropzone.on("successmultiple", function(file, response) {
         }).then((result) => {
             
             if (dropzoneVars.redirect === true && response.status != "error") {
-                window.location.href = dropzoneVars.current_url;
+                window.location.href = dropzoneVars.redirectUrl;
             } else if (response.status != "error") {
                 dropzoneResetFields();
                 //this.removeAllFiles();

@@ -49,6 +49,7 @@ class Dropzone extends WireData implements Module {
      * 
      *  ["submitForm"]  (bool|string)   Submit form after dropzone Ajax request, default = false (optional)
      *  ["redirect"]    (bool|string)   Redirect to the same page after modal confim, only works if submitForm = false
+	 *	["redirectUrl"]	(string)
      *  ["url"]         (string)        Url where u want to post data (required)
      *  ["id"]          (string)        Dropzone field css id, default = dropzone (optional)
      *  ["formID"]      (string)        Form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
@@ -80,6 +81,7 @@ class Dropzone extends WireData implements Module {
 
         $submitForm = !empty($params["submitForm"]) && $params["submitForm"] == "true" ? true : false;
         $redirect   = !empty($params["redirect"]) && $params["redirect"] == "false" ? false : true; 
+		$redirectUrl    = !empty($params["redirectUrl"]) ? $params["redirectUrl"] : $this->page->url;
 
         $url        = !empty($params["url"]) ? $params["url"] : "";
         $id         = !empty($params["id"]) ? $params["id"] : "dropzone";
@@ -113,8 +115,8 @@ class Dropzone extends WireData implements Module {
 
         // variables
         $dropzoneVars = array(
-            "current_url" => $this->page->url,
-            "redirect" => $redirect,
+			"redirect" => $redirect,
+            "redirectUrl" => $redirectUrl,
             'debug' => $this->config->debug,
             'submitForm' => $submitForm,
             'formID' => $formID,
