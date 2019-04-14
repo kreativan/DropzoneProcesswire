@@ -356,6 +356,7 @@ function dropzoneRemoveButton(file, _this) {
             showCancelButton: true,
         }).then((result) => {
             if (result.value) {
+				_this.removeFile(file);
                 dropzoneRemoveReq(file, _this);
             }
         });
