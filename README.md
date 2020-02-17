@@ -86,6 +86,8 @@ $params = [
     'thumbnailHeight' => 140, // thumbnail height, default = 120 (optional)
     // Array of existing images/files. ["url" => "", "name" => "", "size" => ""]
     "my_files" => $dropzone->getPageFiles($page->images, "140"),
+    "renameFile" => "true",
+    "renameFilePrefix" => "my-image-prefix,
 ];
 
 $data = [

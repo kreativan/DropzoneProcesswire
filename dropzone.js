@@ -39,6 +39,13 @@ var myDropzone = new Dropzone("#"+dropzoneVars.id, {
     dictRemoveFile: dropzoneText.remove,
     dictMaxFilesExceeded: "{{maxFiles}} " + dropzoneText.max_files,
     dictDefaultMessage: dropzoneText.message,
+    renameFile: function (file) {
+      let fileName = file.name;
+      let fileExt = fileName.substr(fileName.length - 3);
+      let random = + new Date(); 
+      let newName = dropzoneVars.renameFilePrefix + "-" + random + "." + fileExt;
+      if(dropzoneVars.renameFile) return newName;
+    },
 });
 
 
