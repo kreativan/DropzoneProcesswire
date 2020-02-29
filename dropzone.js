@@ -40,11 +40,22 @@ var myDropzone = new Dropzone("#"+dropzoneVars.id, {
     dictMaxFilesExceeded: "{{maxFiles}} " + dropzoneText.max_files,
     dictDefaultMessage: dropzoneText.message,
     renameFile: function (file) {
-      let fileName = file.name;
-      let fileExt = fileName.substr(fileName.length - 3);
+      const fileName = file.name;
+      let fileExt = "";
+      // use this to check if file ext is 3 or 4 chars
+      // eg: jpg or jpeg
+      let n = fileName.length - 5;
+      let getTheDot = fileName[n];
+      if(getTheDot == ".") {
+        fileExt = fileName.substr(fileName.length - 4);
+      } else {
+        fileExt = fileName.substr(fileName.length - 3);
+      }
+      // random date
       let random = + new Date(); 
       let newName = dropzoneVars.renameFilePrefix + "-" + random + "." + fileExt;
       if(dropzoneVars.renameFile) return newName;
+      //console.log(newName);
     },
 });
 
