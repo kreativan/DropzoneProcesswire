@@ -54,6 +54,7 @@ class Dropzone extends WireData implements Module {
      *  ["id"]          (string)        Dropzone field css id, default = dropzone (optional)
      *  ["formID"]      (string)        Form css ID, requierd if u want to submit the form and rest of the form fields (recomended)
      *  ["buttonID"]    (string)        Submit button css ID, default = submit-dropzone (required)
+     *	["buttonSelector"] (string)	Additional submit buttons css selector
      * 
      *  @param array $data  Data you wish to POST along with files
      * 
@@ -88,6 +89,7 @@ class Dropzone extends WireData implements Module {
         $id         = !empty($params["id"]) ? $params["id"] : "dropzone";
         $formID     = !empty($params["formID"]) ? $params["formID"] : "submit-dropzone";
         $buttonID   = !empty($params["buttonID"]) ? $params["buttonID"] : "";
+	$buttonSelector = !empty($params["buttonSelector"]) ? $params["buttonSelector"] : "";
 
         $acceptedFiles  = !empty($params["acceptedFiles"]) ? $params["acceptedFiles"] : "image/*";
         $maxFiles       = !empty($params["maxFiles"]) ? $params["maxFiles"] : 5;
@@ -119,12 +121,13 @@ class Dropzone extends WireData implements Module {
 
         // variables
         $dropzoneVars = array(
-			      "redirect" => $redirect,
+  			 		"redirect" => $redirect,
             "redirectUrl" => $redirectUrl,
             'debug' => $this->config->debug,
             'submitForm' => $submitForm,
             'formID' => $formID,
             'buttonID' => $buttonID,
+						'buttonSelector' => $buttonSelector,
             'url' => $url,
             'id' => $id,
             'acceptedFiles' => $acceptedFiles,
