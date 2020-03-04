@@ -212,6 +212,38 @@ function submitDropzone() {
     } else {
         console.error("Submit button ID is missing or wrong");
     }
+	
+	
+		//
+    //  Additional buttons to submit the form, based on buttonSelector
+    //
+
+    let submitButtons = (dropzoneVars.buttonSelector) ? document.querySelectorAll(dropzoneVars.buttonSelector) : "";
+
+    if(submitButtons) {
+      submitButtons.forEach(elem => {
+        elem.addEventListener("click", function(e) {
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          validateForm = dropzoneFormValidate();
+          captcha = dropzoneCaptcha();
+          honeypot = document.querySelector("input[name=dropzoneHoneypot]").value;
+
+          if(validateForm.status === true && !honeypot && captcha === true) {
+            if (myDropzone.files != "") {
+                //console.log(myDropzone.files);
+                myDropzone.processQueue();
+            } else {
+                dropzoneFormSubmit();
+            }
+          }
+
+        });
+        
+      });
+    }
 
 }
 submitDropzone();
